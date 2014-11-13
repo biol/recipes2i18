@@ -96,9 +96,11 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <DCC_ExeOutput>..\bld</DCC_ExeOutput>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=2.2.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <DCC_DcuOutput>..\dcu</DCC_DcuOutput>
         <VerInfo_MinorVer>2</VerInfo_MinorVer>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=2.2.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
@@ -124,6 +126,11 @@
             <Form>FormTblTIPIRINS_07</Form>
         </DCCReference>
         <DCCReference Include="..\..\..\commonXE\CheckPreviousXE.pas"/>
+        <DCCReference Include="dbiRecipes.pas">
+            <Form>dmRecipes</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -183,6 +190,12 @@
                 <Platform value="Win64">False</Platform>
             </Platforms>
             <Deployment>
+                <DeployFile LocalName="Release\Win32\recipes2i18.exe" Configuration="Release" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>recipes2i18.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="..\bld\recipes2i18.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>recipes2i18.exe</RemoteName>
