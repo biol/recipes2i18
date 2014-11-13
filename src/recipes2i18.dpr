@@ -1,11 +1,6 @@
-program RecipesI18;
+program recipes2i18;
 
 uses
-  madExcept,
-  madLinkDisAsm,
-  madListHardware,
-  madListProcesses,
-  madListModules,
   Forms,
   guiRecipes in 'guiRecipes.pas' {FormRecipes},
   guiRecipeDetails in 'guiRecipeDetails.pas' {FormRecipeDetails},
