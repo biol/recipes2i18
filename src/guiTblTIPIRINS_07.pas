@@ -4,8 +4,11 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, DBCtrls, ExtCtrls, DB, Mask, Grids, DBGrids, guiRecipeDetails,
-  DBClient, siComp, siLngLnk;
+  Dialogs, StdCtrls, DBCtrls, ExtCtrls, DB, Mask, Grids, DBGrids,
+  DBClient, siComp, siLngLnk, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
 
 type
   TFormTblTIPIRINS_07 = class(TForm)
@@ -76,6 +79,8 @@ implementation
 
 {$R *.dfm}
 
+uses dbiRecipes;
+
 procedure TFormTblTIPIRINS_07.btnSaveDataClick(Sender: TObject);
 begin
   saveData
@@ -89,7 +94,7 @@ end;
 
 procedure TFormTblTIPIRINS_07.saveData(pAsk: boolean);
 begin
-  with dsTipiRisciacquo.dataSet as TClientDataSet do begin
+  with dsTipiRisciacquo.dataSet as TFDTable do begin
     checkBrowseMode;
     if changeCount > 0 then begin
       if pAsk and (messageDlg('save data ?', mtConfirmation, [mbOK, mbCancel], 0) <> mrOK) then exit;

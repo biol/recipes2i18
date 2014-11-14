@@ -4,8 +4,11 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, DBCtrls, ExtCtrls, Mask, Grids, DBGrids, guiRecipeDetails,
-  DB, DBClient, siComp, siLngLnk;
+  Dialogs, StdCtrls, DBCtrls, ExtCtrls, Mask, Grids, DBGrids,
+  DB, DBClient, siComp, siLngLnk, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Param, FireDAC.Stan.Error, FireDAC.DatS, FireDAC.Phys.Intf,
+  FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.DApt, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
 
 type
   TFormTblTIPIDROP_07 = class(TForm)
@@ -82,7 +85,7 @@ type
 var
   FormTblTIPIDROP_07: TFormTblTIPIDROP_07;
 
-implementation
+implementation uses dbiRecipes;
 
 {$R *.dfm}
 
@@ -101,7 +104,7 @@ end;
 
 procedure TFormTblTIPIDROP_07.saveData(pAsk: boolean);
 begin
-  with dsTipiDeposito.dataSet as TClientDataSet do begin
+  with dsTipiDeposito.dataSet as TFDTable do begin
     checkBrowseMode;
     if changeCount > 0 then begin
       if pAsk and (messageDlg('save data ?', mtConfirmation, [mbOK, mbCancel], 0) <> mrOK) then exit;

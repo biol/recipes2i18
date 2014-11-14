@@ -17,6 +17,10 @@ type
     recipesCnx: TFDConnection;
     tblRecipes: TFDTable;
     qryUtils: TFDQuery;
+    tblPositions: TFDTable;
+    tblTipiPrelievo: TFDTable;
+    tblTipiDeposito: TFDTable;
+    tblTipiRisciacquo: TFDTable;
     procedure recipesCnxBeforeConnect(Sender: TObject);
     procedure tblRecipesBeforeDelete(DataSet: TDataSet);
     procedure tblRecipesBeforeInsert(DataSet: TDataSet);

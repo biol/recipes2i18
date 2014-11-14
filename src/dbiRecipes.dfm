@@ -44,4 +44,40 @@ object dmRecipes: TdmRecipes
     Left = 168
     Top = 40
   end
+  object tblPositions: TFDTable
+    Active = True
+    IndexFieldNames = 'ID'
+    Connection = recipesCnx
+    UpdateOptions.UpdateTableName = 'POSITIONS'
+    TableName = 'POSITIONS'
+    Left = 80
+    Top = 184
+  end
+  object tblTipiPrelievo: TFDTable
+    Active = True
+    IndexFieldNames = 'ID'
+    Connection = recipesCnx
+    UpdateOptions.UpdateTableName = 'TIPIPREL_07'
+    TableName = 'TIPIPREL_07'
+    Left = 176
+    Top = 184
+  end
+  object tblTipiDeposito: TFDTable
+    Active = True
+    IndexFieldNames = 'ID'
+    Connection = recipesCnx
+    UpdateOptions.UpdateTableName = 'TIPIDEPO_07'
+    TableName = 'TIPIDEPO_07'
+    Left = 240
+    Top = 200
+  end
+  object tblTipiRisciacquo: TFDTable
+    Active = True
+    IndexFieldNames = 'ID'
+    Connection = recipesCnx
+    UpdateOptions.UpdateTableName = 'TIPIRISC_07'
+    TableName = 'TIPIRISC_07'
+    Left = 304
+    Top = 184
+  end
 end

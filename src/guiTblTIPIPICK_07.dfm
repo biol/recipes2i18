@@ -758,9 +758,8 @@ object FormTblTIPIPICK_07: TFormTblTIPIPICK_07
         Alignment = taCenter
         Color = clSkyBlue
         Expanded = False
-        FieldName = 'TTot'
+        FieldName = 'TTOT'
         Title.Caption = ' Tempo Totale [Sec]'
-        Width = 100
         Visible = True
       end>
   end
@@ -1072,12 +1071,12 @@ object FormTblTIPIPICK_07: TFormTblTIPIPICK_07
     ValueUnchecked = '0'
   end
   object dsTipiPrelievo: TDataSource
-    DataSet = FormRecipeDetails.cdsTIPIPREL_07
+    DataSet = dmRecipes.tblTipiPrelievo
     Left = 120
     Top = 160
   end
   object siLangLinked1: TsiLangLinked
-    Version = '6.5.4.7'
+    Version = '7.3'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

@@ -1065,19 +1065,18 @@ object FormTblTIPIDROP_07: TFormTblTIPIDROP_07
         Alignment = taCenter
         Color = clSkyBlue
         Expanded = False
-        FieldName = 'TTot'
+        FieldName = 'TTOT'
         Title.Caption = ' Tempo Totale [Sec]'
-        Width = 100
         Visible = True
       end>
   end
   object dsTipiDeposito: TDataSource
-    DataSet = FormRecipeDetails.cdsTIPIDEPO_07
+    DataSet = dmRecipes.tblTipiDeposito
     Left = 120
     Top = 160
   end
   object siLangLinked1: TsiLangLinked
-    Version = '6.5.4.7'
+    Version = '7.3'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')

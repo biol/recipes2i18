@@ -25,7 +25,7 @@ object FormTblPositions: TFormTblPositions
       Top = 8
       Width = 135
       Height = 25
-      DataSource = FormRecipeDetails.dsPositions
+      DataSource = dsPositions
       VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbRefresh]
       TabOrder = 0
     end
@@ -36,7 +36,7 @@ object FormTblPositions: TFormTblPositions
     Width = 731
     Height = 451
     Align = alClient
-    DataSource = FormRecipeDetails.dsPositions
+    DataSource = dsPositions
     ReadOnly = True
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
@@ -46,7 +46,7 @@ object FormTblPositions: TFormTblPositions
     TitleFont.Style = []
   end
   object siLangLinked1: TsiLangLinked
-    Version = '6.5.4.7'
+    Version = '7.3'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
@@ -90,8 +90,8 @@ object FormTblPositions: TFormTblPositions
       'DataField'
       'KeyField'
       'ListField')
-    Left = 40
-    Top = 128
+    Left = 552
+    Top = 96
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A00540046006F0072006D00540062006C0050006F0073006900
@@ -134,5 +134,10 @@ object FormTblPositions: TFormTblPositions
       6F006E0073000100440045004600410055004C0054005F004300480041005200
       5300450054000100010001000100440045004600410055004C0054005F004300
       4800410052005300450054000D000A00}
+  end
+  object dsPositions: TDataSource
+    DataSet = dmRecipes.tblPositions
+    Left = 624
+    Top = 72
   end
 end
