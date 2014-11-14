@@ -199,7 +199,6 @@ procedure TFormRecipes.FormActivate(Sender: TObject);
 begin   if not _booting then exit;                   // eliminare integrando in aooBootXE
   _booting := false;
   lblRel.caption := 'Rel.' + sGetBuildInfo;
-  formRecipeDetails.openCDSs;
   lblGdb.caption := 'Gdb.' + dmRecipes.recipesCnx.Params.Values['database'];
   loadFormDimsNoLang(self);
 

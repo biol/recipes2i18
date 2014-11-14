@@ -24,9 +24,16 @@ type
     procedure recipesCnxBeforeConnect(Sender: TObject);
     procedure tblRecipesBeforeDelete(DataSet: TDataSet);
     procedure tblRecipesBeforeInsert(DataSet: TDataSet);
+    procedure tblTipiDepositoNewRecord(DataSet: TDataSet);
+    procedure tblTipiDepositoAfterOpen(DataSet: TDataSet);
+    procedure tblTipiPrelievoAfterOpen(DataSet: TDataSet);
+    procedure tblTipiRisciacquoAfterOpen(DataSet: TDataSet);
+    procedure tblTipiRisciacquoNewRecord(DataSet: TDataSet);
+    procedure tblTipiPrelievoNewRecord(DataSet: TDataSet);
   private
     { Private declarations }
   public
+    lastPickupID, lastDropID, lastRinsingID: integer;
     function recipeExists(pRecipeID: integer): boolean;
     procedure buildNewEmptyRecipe(pRecipeID: integer; pName: string);
     procedure doDeleteRecipeDetails(pRecipeID: integer);
@@ -100,6 +107,64 @@ end;
 procedure TdmRecipes.tblRecipesBeforeInsert(DataSet: TDataSet);
 begin
   showMessage(FormRecipes.siLang1.GetTextOrDefault('IDS_15' (* 'pleas use "NEW recipe" button to add recipes' *) )); abort
+end;
+
+procedure TdmRecipes.tblTipiDepositoAfterOpen(DataSet: TDataSet);
+begin with Dataset do begin
+  last;   lastDropID := fieldByName('ID').AsInteger;
+end end;
+
+procedure TdmRecipes.tblTipiPrelievoAfterOpen(DataSet: TDataSet);
+begin with DataSet do begin
+  last;   lastPickupID := fieldByName('ID').AsInteger;
+end end;
+
+procedure TdmRecipes.tblTipiPrelievoNewRecord(DataSet: TDataSet);
+begin   inc(lastPickupID);
+  with Dataset do begin
+    FieldByName('ID').AsInteger := lastPickupID;
+    FieldByName('VEL_Q1').AsInteger := -1;   // true by default
+    FieldByName('VEL_Q2').AsInteger := -1;   // true by default
+    FieldByName('VEL_Q3').AsInteger := -1;   // true by default
+    FieldByName('VEL_Q4').AsInteger := -1;   // true by default
+    FieldByName('VEL_Q5').AsInteger := -1;   // true by default
+    FieldByName('VEL_ALLI').AsInteger := -1;   // true by default
+    FieldByName('VEL_HILO').AsInteger := -1;   // true by default
+    FieldByName('PENDENZA').AsInteger := -1;   // true by default
+  end;
+end;
+
+procedure TdmRecipes.tblTipiRisciacquoAfterOpen(DataSet: TDataSet);
+begin with DataSet do begin
+  last;   lastRinsingID := fieldByName('ID').AsInteger;
+end end;
+
+procedure TdmRecipes.tblTipiRisciacquoNewRecord(DataSet: TDataSet);
+begin   inc(lastRinsingID);
+  with Dataset do begin
+    FieldByName('ID').AsInteger := lastRinsingID;
+    FieldByName('VEL_Q1').AsInteger := -1;   // true by default
+    FieldByName('VEL_Q2').AsInteger := -1;   // true by default
+    FieldByName('VEL_Q3').AsInteger := -1;   // true by default
+    FieldByName('VEL_ALLI').AsInteger := -1;   // true by default
+    FieldByName('VEL_HILO').AsInteger := -1;   // true by default
+    FieldByName('PENDENZA').AsInteger := -1;   // true by default
+  end;
+end;
+
+procedure TdmRecipes.tblTipiDepositoNewRecord(DataSet: TDataSet);
+begin inc(lastDropID);
+  with Dataset do begin
+    FieldByName('ID').AsInteger := lastDropID;
+    FieldByName('VEL_Q1').AsInteger := -1;   // true by default
+    FieldByName('VEL_Q2').AsInteger := -1;   // true by default
+    FieldByName('VEL_Q3').AsInteger := -1;   // true by default
+    FieldByName('VEL_Q4').AsInteger := -1;   // true by default
+    FieldByName('VEL_Q5').AsInteger := -1;   // true by default
+    FieldByName('VEL_ALLI').AsInteger := -1;   // true by default
+    FieldByName('VEL_HILO').AsInteger := -1;   // true by default
+    FieldByName('PENDENZA').AsInteger := -1;   // true by default
+  end;
 end;
 
 end.

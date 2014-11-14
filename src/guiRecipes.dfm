@@ -23,7 +23,6 @@ object FormRecipes: TFormRecipes
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 684
     DesignSize = (
       704
       41)
@@ -48,7 +47,6 @@ object FormRecipes: TFormRecipes
       Caption = 'Save Data'
       TabOrder = 1
       OnClick = btnSaveDataClick
-      ExplicitLeft = 598
     end
     object btnPositions: TButton
       Left = 316
@@ -59,7 +57,6 @@ object FormRecipes: TFormRecipes
       Caption = 'P o s i z i o n i'
       TabOrder = 2
       OnClick = btnPositionsClick
-      ExplicitLeft = 296
     end
     object btnDropTypes: TButton
       Left = 423
@@ -70,7 +67,6 @@ object FormRecipes: TFormRecipes
       Caption = 'Depositi'
       TabOrder = 3
       OnClick = btnDropTypesClick
-      ExplicitLeft = 403
     end
     object btnPickupTypes: TButton
       Left = 481
@@ -81,7 +77,6 @@ object FormRecipes: TFormRecipes
       Caption = 'Prelievi'
       TabOrder = 4
       OnClick = btnPickupTypesClick
-      ExplicitLeft = 461
     end
     object btnRinsingTypes: TButton
       Left = 538
@@ -92,7 +87,6 @@ object FormRecipes: TFormRecipes
       Caption = 'RINSINGs'
       TabOrder = 5
       OnClick = btnRinsingTypesClick
-      ExplicitLeft = 518
     end
   end
   object pnlFoot: TPanel
@@ -102,7 +96,6 @@ object FormRecipes: TFormRecipes
     Height = 63
     Align = alBottom
     TabOrder = 1
-    ExplicitWidth = 684
     DesignSize = (
       704
       63)
@@ -212,7 +205,6 @@ object FormRecipes: TFormRecipes
       Caption = 'NUOVA ricetta'
       TabOrder = 3
       OnClick = btnNewRecipeClick
-      ExplicitLeft = 567
     end
   end
   object pnlRecipeDetail: TPanel
@@ -222,7 +214,6 @@ object FormRecipes: TFormRecipes
     Height = 161
     Align = alBottom
     TabOrder = 2
-    ExplicitWidth = 684
     object Label1: TLabel
       Left = -1
       Top = 30

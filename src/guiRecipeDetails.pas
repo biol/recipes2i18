@@ -19,19 +19,7 @@ type
     cdsRecipeDetails: TClientDataSet;
     dsRecipeDetails: TDataSource;
     btnSaveData: TButton;
-    qdsPositions: TSQLDataSet;
-    dspPositions: TDataSetProvider;
-    cdsPositions: TClientDataSet;
     dsPositions: TDataSource;
-    cdsPositionsID: TIntegerField;
-    cdsPositionsMM: TIntegerField;
-    cdsPositionsALIAS: TIntegerField;
-    cdsPositionsISOXI: TIntegerField;
-    cdsPositionsISELE: TIntegerField;
-    cdsPositionsISELE2: TIntegerField;
-    cdsPositionsISPAUSE: TIntegerField;
-    cdsPositionsHASDEVICE: TIntegerField;
-    cdsPositionsISCOLOR: TIntegerField;
     cdsRecipeDetailsIDRICETTA: TIntegerField;
     cdsRecipeDetailsID: TIntegerField;
     cdsRecipeDetailsPOSIZIONE: TIntegerField;
@@ -48,9 +36,6 @@ type
     dblcbPosizioneName: TDBLookupComboBox;
     dblcbPosizioneDscr: TDBLookupComboBox;
     Label1: TLabel;
-    qdsTIPIDEPO_07: TSQLDataSet;
-    dspTIPIDEPO_07: TDataSetProvider;
-    cdsTIPIDEPO_07: TClientDataSet;
     dsTIPIDEPO_07: TDataSource;
     Label2: TLabel;
     dblcbDrop: TDBLookupComboBox;
@@ -60,13 +45,7 @@ type
     Label4: TLabel;
     Label5: TLabel;
     dbeRINSINGCOUNT: TDBEdit;
-    qdsTIPIPREL_07: TSQLDataSet;
-    dspTIPIPREL_07: TDataSetProvider;
-    cdsTIPIPREL_07: TClientDataSet;
     dsTIPIPREL_07: TDataSource;
-    qdsTIPIRISC_07: TSQLDataSet;
-    dspTIPIRISC_07: TDataSetProvider;
-    cdsTIPIRISC_07: TClientDataSet;
     dsTIPIRISC_07: TDataSource;
     Label6: TLabel;
     dbeTBAGNO: TDBEdit;
@@ -84,8 +63,6 @@ type
     dbeSPRUZZO: TDBEdit;
     dbePAUSACONTROLLO: TDBEdit;
     cdsRecipeDetailsDESCRIZIONE: TWideStringField;
-    cdsPositionsNAME: TWideStringField;
-    cdsPositionsDSCR: TWideStringField;
     siLangLinked1: TsiLangLinked;
     cdsRecipeDetailsGALVANICID: TIntegerField;
     cdsRecipeDetailsRESERVECOLORCHECK: TIntegerField;
@@ -116,9 +93,6 @@ type
     procedure Label4DblClick(Sender: TObject);
     procedure btnRenumClick(Sender: TObject);
     procedure btnDuplicateClick(Sender: TObject);
-    procedure cdsTIPIDEPO_07NewRecord(DataSet: TDataSet);
-    procedure cdsTIPIPREL_07NewRecord(DataSet: TDataSet);
-    procedure cdsTIPIRISC_07NewRecord(DataSet: TDataSet);
     procedure btnDropTypesClick(Sender: TObject);
     procedure btnPickupTypesClick(Sender: TObject);
     procedure btnRinsingTypesClick(Sender: TObject);
@@ -128,7 +102,6 @@ type
     _prelDepoRins: boolean;
     procedure saveData(pAsk: boolean = false);
   public
-    lastPickupID, lastDropID, lastRinsingID: integer;
 
     details_ELERECIPEID
   , details_OXIVOLTSETPOINTX10
@@ -140,14 +113,13 @@ type
     procedure setup(pRecipeID: integer; pRecipeName: string);
     procedure DuplicateRecord(cds: TClientDataSet; pID_fieldName: string = 'ID');
     procedure DuplicateRecipe(cds: TClientDataSet; pNewRecipeID: integer; pRecipeID_fieldName: string = 'IDRICETTA');
-    procedure openCDSs;
   end;
 
 var
   FormRecipeDetails: TFormRecipeDetails;
 
 implementation uses guiRecipes, guiTblPositions, guiTblTIPIDROP_07,
-  guiTblTIPIPICK_07, guiTblTIPIRINS_07, uEtcXE;
+  guiTblTIPIPICK_07, guiTblTIPIRINS_07, uEtcXE, dbiRecipes;
 
 {$R *.dfm}
 
@@ -308,49 +280,6 @@ begin
   end;
 end;
 
-procedure TFormRecipeDetails.cdsTIPIDEPO_07NewRecord(DataSet: TDataSet);
-begin inc(lastDropID);
-  with Dataset do begin
-    FieldByName('ID').AsInteger := lastDropID;
-    FieldByName('VEL_Q1').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q2').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q3').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q4').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q5').AsInteger := -1;   // true by default
-    FieldByName('VEL_ALLI').AsInteger := -1;   // true by default
-    FieldByName('VEL_HILO').AsInteger := -1;   // true by default
-    FieldByName('PENDENZA').AsInteger := -1;   // true by default
-  end;
-end;
-
-procedure TFormRecipeDetails.cdsTIPIPREL_07NewRecord(DataSet: TDataSet);
-begin   inc(lastPickupID);
-  with Dataset do begin
-    FieldByName('ID').AsInteger := lastPickupID;
-    FieldByName('VEL_Q1').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q2').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q3').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q4').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q5').AsInteger := -1;   // true by default
-    FieldByName('VEL_ALLI').AsInteger := -1;   // true by default
-    FieldByName('VEL_HILO').AsInteger := -1;   // true by default
-    FieldByName('PENDENZA').AsInteger := -1;   // true by default
-  end;
-end;
-
-procedure TFormRecipeDetails.cdsTIPIRISC_07NewRecord(DataSet: TDataSet);
-begin   inc(lastRinsingID);
-  with Dataset do begin
-    FieldByName('ID').AsInteger := lastRinsingID;
-    FieldByName('VEL_Q1').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q2').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q3').AsInteger := -1;   // true by default
-    FieldByName('VEL_ALLI').AsInteger := -1;   // true by default
-    FieldByName('VEL_HILO').AsInteger := -1;   // true by default
-    FieldByName('PENDENZA').AsInteger := -1;   // true by default
-  end;
-end;
-
 procedure TFormRecipeDetails.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
@@ -384,20 +313,6 @@ end;
 procedure TFormRecipeDetails.Label4DblClick(Sender: TObject);
 begin
   FormTblTIPIRINS_07.show
-end;
-
-procedure TFormRecipeDetails.openCDSs;
-begin
-  cdsPositions    .Active := true;
-  with cdsTIPIDEPO_07 do begin
-    Active := true;   last;   lastDropID := fieldByName('ID').AsInteger;
-  end;
-  with cdsTIPIPREL_07 do begin
-    Active := true;   last;   lastPickupID := fieldByName('ID').AsInteger;
-  end;
-  with cdsTIPIRISC_07 do begin
-    Active := true;   last;   lastRinsingID := fieldByName('ID').AsInteger;
-  end;
 end;
 
 procedure TFormRecipeDetails.saveData(pAsk: boolean);

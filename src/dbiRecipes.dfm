@@ -55,6 +55,8 @@ object dmRecipes: TdmRecipes
   end
   object tblTipiPrelievo: TFDTable
     Active = True
+    AfterOpen = tblTipiPrelievoAfterOpen
+    OnNewRecord = tblTipiPrelievoNewRecord
     IndexFieldNames = 'ID'
     Connection = recipesCnx
     UpdateOptions.UpdateTableName = 'TIPIPREL_07'
@@ -64,6 +66,8 @@ object dmRecipes: TdmRecipes
   end
   object tblTipiDeposito: TFDTable
     Active = True
+    AfterOpen = tblTipiDepositoAfterOpen
+    OnNewRecord = tblTipiDepositoNewRecord
     IndexFieldNames = 'ID'
     Connection = recipesCnx
     UpdateOptions.UpdateTableName = 'TIPIDEPO_07'
@@ -73,6 +77,8 @@ object dmRecipes: TdmRecipes
   end
   object tblTipiRisciacquo: TFDTable
     Active = True
+    AfterOpen = tblTipiRisciacquoAfterOpen
+    OnNewRecord = tblTipiRisciacquoNewRecord
     IndexFieldNames = 'ID'
     Connection = recipesCnx
     UpdateOptions.UpdateTableName = 'TIPIRISC_07'
