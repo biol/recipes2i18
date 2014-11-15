@@ -134,6 +134,10 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
+        <DCCReference Include="guiTblGalvanica.pas">
+            <Form>FormTblGalvanica</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -200,6 +204,12 @@
                     </Platform>
                 </DeployFile>
                 <DeployFile LocalName="..\bld\recipes2i18.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>recipes2i18.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\bld\recipes2i18.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>recipes2i18.exe</RemoteName>
                         <Overwrite>true</Overwrite>

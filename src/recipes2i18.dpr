@@ -10,7 +10,8 @@ uses
   guiTblTIPIPICK_07 in 'guiTblTIPIPICK_07.pas' {FormTblTIPIPICK_07},
   guiTblTIPIRINS_07 in 'guiTblTIPIRINS_07.pas' {FormTblTIPIRINS_07},
   CheckPreviousXE in '..\..\..\commonXE\CheckPreviousXE.pas',
-  dbiRecipes in 'dbiRecipes.pas' {dmRecipes: TDataModule};
+  dbiRecipes in 'dbiRecipes.pas' {dmRecipes: TDataModule},
+  guiTblGalvanica in 'guiTblGalvanica.pas' {FormTblGalvanica};
 
 {$R *.res}
 
@@ -24,5 +25,6 @@ begin if not CheckPreviousXE.RestoreIfRunning(Application.Handle) then begin
   Application.CreateForm(TFormTblTIPIPICK_07, FormTblTIPIPICK_07);
   Application.CreateForm(TFormTblTIPIRINS_07, FormTblTIPIRINS_07);
   Application.CreateForm(TdmRecipes, dmRecipes);
+  Application.CreateForm(TFormTblGalvanica, FormTblGalvanica);
   Application.Run;
 end end.

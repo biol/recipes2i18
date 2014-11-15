@@ -1,6 +1,6 @@
 object dmRecipes: TdmRecipes
   OldCreateOrder = False
-  Height = 329
+  Height = 623
   Width = 429
   object FDPhysFBDriverLink1: TFDPhysFBDriverLink
     Left = 338
@@ -50,8 +50,8 @@ object dmRecipes: TdmRecipes
     Connection = recipesCnx
     UpdateOptions.UpdateTableName = 'POSITIONS'
     TableName = 'POSITIONS'
-    Left = 80
-    Top = 184
+    Left = 256
+    Top = 240
   end
   object tblTipiPrelievo: TFDTable
     Active = True
@@ -61,8 +61,8 @@ object dmRecipes: TdmRecipes
     Connection = recipesCnx
     UpdateOptions.UpdateTableName = 'TIPIPREL_07'
     TableName = 'TIPIPREL_07'
-    Left = 176
-    Top = 184
+    Left = 72
+    Top = 216
   end
   object tblTipiDeposito: TFDTable
     Active = True
@@ -72,8 +72,8 @@ object dmRecipes: TdmRecipes
     Connection = recipesCnx
     UpdateOptions.UpdateTableName = 'TIPIDEPO_07'
     TableName = 'TIPIDEPO_07'
-    Left = 240
-    Top = 200
+    Left = 128
+    Top = 232
   end
   object tblTipiRisciacquo: TFDTable
     Active = True
@@ -83,7 +83,26 @@ object dmRecipes: TdmRecipes
     Connection = recipesCnx
     UpdateOptions.UpdateTableName = 'TIPIRISC_07'
     TableName = 'TIPIRISC_07'
-    Left = 304
-    Top = 184
+    Left = 192
+    Top = 216
+  end
+  object tblGalvRecipes: TFDTable
+    Active = True
+    IndexFieldNames = 'IDELETTROCOLORE'
+    Connection = recipesCnx
+    UpdateOptions.UpdateTableName = 'INDICEELETTROCOLRE'
+    TableName = 'INDICEELETTROCOLRE'
+    Left = 320
+    Top = 224
+  end
+  object tblRecipeSteps: TFDTable
+    OnNewRecord = tblRecipeStepsNewRecord
+    MasterSource = FormRecipes.dsRecipes
+    MasterFields = 'IDRICETTA'
+    Connection = recipesCnx
+    UpdateOptions.UpdateTableName = 'DETTAGLIORICETTE'
+    TableName = 'DETTAGLIORICETTE'
+    Left = 136
+    Top = 120
   end
 end

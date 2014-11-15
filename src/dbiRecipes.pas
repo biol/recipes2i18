@@ -21,6 +21,8 @@ type
     tblTipiPrelievo: TFDTable;
     tblTipiDeposito: TFDTable;
     tblTipiRisciacquo: TFDTable;
+    tblGalvRecipes: TFDTable;
+    tblRecipeSteps: TFDTable;
     procedure recipesCnxBeforeConnect(Sender: TObject);
     procedure tblRecipesBeforeDelete(DataSet: TDataSet);
     procedure tblRecipesBeforeInsert(DataSet: TDataSet);
@@ -30,6 +32,7 @@ type
     procedure tblTipiRisciacquoAfterOpen(DataSet: TDataSet);
     procedure tblTipiRisciacquoNewRecord(DataSet: TDataSet);
     procedure tblTipiPrelievoNewRecord(DataSet: TDataSet);
+    procedure tblRecipeStepsNewRecord(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -107,6 +110,19 @@ end;
 procedure TdmRecipes.tblRecipesBeforeInsert(DataSet: TDataSet);
 begin
   showMessage(FormRecipes.siLang1.GetTextOrDefault('IDS_15' (* 'pleas use "NEW recipe" button to add recipes' *) )); abort
+end;
+
+procedure TdmRecipes.tblRecipeStepsNewRecord(DataSet: TDataSet);
+var tblClone: TFDTable;
+begin
+  tblClone := TFDTable.Create(self);
+  try
+    tblClone.CloneCursor(DataSet as TFDTable);
+    tblClone.Last;
+    DataSet.fieldByName('ID').AsInteger := 10 + tblClone.fieldByName('ID').AsInteger;
+  finally
+    tblClone.Free
+  end;
 end;
 
 procedure TdmRecipes.tblTipiDepositoAfterOpen(DataSet: TDataSet);

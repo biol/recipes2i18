@@ -58,46 +58,49 @@ object FormRecipeDetails: TFormRecipeDetails
   end
   object pnlDetail: TPanel
     Left = 0
-    Top = 448
+    Top = 440
     Width = 951
-    Height = 111
+    Height = 119
     Align = alBottom
     TabOrder = 1
     DesignSize = (
       951
-      111)
+      119)
     object Label1: TLabel
-      Left = 18
+      Left = 44
       Top = 10
       Width = 28
       Height = 13
+      Alignment = taRightJustify
       Caption = 'Vasca'
       OnDblClick = Label1DblClick
     end
     object Label2: TLabel
-      Left = 18
+      Left = 31
       Top = 40
       Width = 41
       Height = 13
       Hint = '2click to manage drop types'
+      Alignment = taRightJustify
       Caption = 'deposito'
       ParentShowHint = False
       ShowHint = True
       OnDblClick = Label2DblClick
     end
     object Label3: TLabel
-      Left = 10
+      Left = 34
       Top = 64
       Width = 38
       Height = 13
       Hint = '2click to manage pickup types'
+      Alignment = taRightJustify
       Caption = 'prelievo'
       ParentShowHint = False
       ShowHint = True
       OnDblClick = Label3DblClick
     end
     object Label4: TLabel
-      Left = 468
+      Left = 497
       Top = 39
       Width = 47
       Height = 13
@@ -109,7 +112,7 @@ object FormRecipeDetails: TFormRecipeDetails
       OnDblClick = Label4DblClick
     end
     object Label5: TLabel
-      Left = 449
+      Left = 478
       Top = 64
       Width = 66
       Height = 13
@@ -117,7 +120,7 @@ object FormRecipeDetails: TFormRecipeDetails
       Caption = 'n.ro risciacqui'
     end
     object Label6: TLabel
-      Left = 208
+      Left = 237
       Top = 64
       Width = 36
       Height = 13
@@ -125,7 +128,7 @@ object FormRecipeDetails: TFormRecipeDetails
       Caption = 'secondi'
     end
     object Label7: TLabel
-      Left = 211
+      Left = 240
       Top = 40
       Width = 34
       Height = 13
@@ -133,7 +136,7 @@ object FormRecipeDetails: TFormRecipeDetails
       Caption = 'priorit'#224
     end
     object Label8: TLabel
-      Left = 307
+      Left = 336
       Top = 40
       Width = 73
       Height = 13
@@ -141,15 +144,24 @@ object FormRecipeDetails: TFormRecipeDetails
       Caption = 'controllo colore'
     end
     object Label9: TLabel
-      Left = 314
+      Left = 343
       Top = 64
       Width = 65
       Height = 13
       Alignment = taRightJustify
       Caption = 'spruzzo/mov.'
     end
+    object lblGalvanica: TLabel
+      Left = 26
+      Top = 95
+      Width = 46
+      Height = 13
+      Alignment = taRightJustify
+      Caption = 'Galvanica'
+      OnDblClick = Label1DblClick
+    end
     object dblcbPosizioneName: TDBLookupComboBox
-      Left = 46
+      Left = 75
       Top = 6
       Width = 145
       Height = 21
@@ -161,7 +173,7 @@ object FormRecipeDetails: TFormRecipeDetails
       TabOrder = 0
     end
     object dblcbPosizioneDscr: TDBLookupComboBox
-      Left = 200
+      Left = 229
       Top = 6
       Width = 467
       Height = 21
@@ -173,7 +185,7 @@ object FormRecipeDetails: TFormRecipeDetails
       TabOrder = 1
     end
     object dblcbDrop: TDBLookupComboBox
-      Left = 46
+      Left = 75
       Top = 36
       Width = 145
       Height = 21
@@ -185,7 +197,7 @@ object FormRecipeDetails: TFormRecipeDetails
       TabOrder = 2
     end
     object dblcbPickup: TDBLookupComboBox
-      Left = 46
+      Left = 75
       Top = 60
       Width = 145
       Height = 21
@@ -197,7 +209,7 @@ object FormRecipeDetails: TFormRecipeDetails
       TabOrder = 3
     end
     object dblcbRinsing: TDBLookupComboBox
-      Left = 522
+      Left = 551
       Top = 35
       Width = 145
       Height = 21
@@ -209,7 +221,7 @@ object FormRecipeDetails: TFormRecipeDetails
       TabOrder = 4
     end
     object dbeRINSINGCOUNT: TDBEdit
-      Left = 522
+      Left = 551
       Top = 61
       Width = 57
       Height = 21
@@ -218,7 +230,7 @@ object FormRecipeDetails: TFormRecipeDetails
       TabOrder = 5
     end
     object dbeTBAGNO: TDBEdit
-      Left = 251
+      Left = 280
       Top = 61
       Width = 57
       Height = 21
@@ -227,7 +239,7 @@ object FormRecipeDetails: TFormRecipeDetails
       TabOrder = 6
     end
     object dbcbPRIORITA: TDBComboBox
-      Left = 251
+      Left = 280
       Top = 37
       Width = 57
       Height = 21
@@ -273,7 +285,7 @@ object FormRecipeDetails: TFormRecipeDetails
       OnClick = btnRinsingTypesClick
     end
     object dbeSPRUZZO: TDBEdit
-      Left = 386
+      Left = 415
       Top = 61
       Width = 57
       Height = 21
@@ -282,13 +294,25 @@ object FormRecipeDetails: TFormRecipeDetails
       TabOrder = 11
     end
     object dbePAUSACONTROLLO: TDBEdit
-      Left = 386
+      Left = 415
       Top = 36
       Width = 57
       Height = 21
       DataField = 'PAUSACONTROLLO'
       DataSource = dsRecipeDetails
       TabOrder = 12
+    end
+    object dblcbGalvanica: TDBLookupComboBox
+      Left = 75
+      Top = 91
+      Width = 145
+      Height = 21
+      DataField = 'GALVANICID'
+      DataSource = dsRecipeDetails
+      KeyField = 'IDELETTROCOLORE'
+      ListField = 'NOME'
+      ListSource = dsGalvRecipes
+      TabOrder = 13
     end
   end
   object pnlFoot: TPanel
@@ -336,7 +360,7 @@ object FormRecipeDetails: TFormRecipeDetails
     Left = 0
     Top = 41
     Width = 951
-    Height = 407
+    Height = 399
     Align = alClient
     DataSource = dsRecipeDetails
     TabOrder = 3
@@ -513,7 +537,7 @@ object FormRecipeDetails: TFormRecipeDetails
         ParamType = ptInput
       end>
     SQLConnection = FormRecipes.cnxRecipes
-    Left = 28
+    Left = 36
     Top = 104
   end
   object dspRecipeDetails: TDataSetProvider
@@ -599,7 +623,7 @@ object FormRecipeDetails: TFormRecipeDetails
     object cdsRecipeDetailsGalvDscr: TStringField
       FieldKind = fkLookup
       FieldName = 'GalvDscr'
-      LookupDataSet = cdsGalvRecipes
+      LookupDataSet = dmRecipes.tblGalvRecipes
       LookupKeyFields = 'IDELETTROCOLORE'
       LookupResultField = 'DESCRIZIONE'
       KeyFields = 'GALVANICID'
@@ -614,23 +638,23 @@ object FormRecipeDetails: TFormRecipeDetails
   end
   object dsPositions: TDataSource
     DataSet = dmRecipes.tblPositions
-    Left = 379
-    Top = 191
+    Left = 539
+    Top = 111
   end
   object dsTIPIDEPO_07: TDataSource
     DataSet = dmRecipes.tblTipiDeposito
-    Left = 264
-    Top = 186
+    Left = 392
+    Top = 122
   end
   object dsTIPIPREL_07: TDataSource
     DataSet = dmRecipes.tblTipiPrelievo
-    Left = 264
-    Top = 242
+    Left = 392
+    Top = 178
   end
   object dsTIPIRISC_07: TDataSource
     DataSet = dmRecipes.tblTipiRisciacquo
-    Left = 264
-    Top = 306
+    Left = 392
+    Top = 242
   end
   object siLangLinked1: TsiLangLinked
     Version = '7.3'
@@ -677,8 +701,8 @@ object FormRecipeDetails: TFormRecipeDetails
       'DataField'
       'KeyField'
       'ListField')
-    Left = 40
-    Top = 416
+    Left = 56
+    Top = 344
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A00540046006F0072006D005200650063006900700065004400
@@ -926,70 +950,9 @@ object FormRecipeDetails: TFormRecipeDetails
       4300480041005200530045005400010001000100010044004500460041005500
       4C0054005F0043004800410052005300450054000D000A00}
   end
-  object qdsGalvRecipes: TSQLDataSet
-    SchemaName = 'sysdba'
-    CommandText = 'select * from  INDICEELETTROCOLRE'#13#10'order by IDELETTROCOLORE'
-    MaxBlobSize = -1
-    Params = <>
-    SQLConnection = FormRecipes.cnxRecipes
-    Left = 386
-    Top = 349
-  end
-  object dspGalvRecipes: TDataSetProvider
-    DataSet = qdsGalvRecipes
-    Left = 450
-    Top = 368
-  end
-  object cdsGalvRecipes: TClientDataSet
-    Aggregates = <>
-    Params = <>
-    ProviderName = 'dspGalvRecipes'
-    Left = 514
-    Top = 349
-    object cdsGalvRecipesIDELETTROCOLORE: TIntegerField
-      FieldName = 'IDELETTROCOLORE'
-      Required = True
-    end
-    object cdsGalvRecipesNOME: TWideStringField
-      FieldName = 'NOME'
-      Size = 45
-    end
-    object cdsGalvRecipesCLIENTE: TWideStringField
-      FieldName = 'CLIENTE'
-      Size = 45
-    end
-    object cdsGalvRecipesDESCRIZIONE: TWideStringField
-      FieldName = 'DESCRIZIONE'
-      Size = 300
-    end
-    object cdsGalvRecipesCATEGORIA: TIntegerField
-      FieldName = 'CATEGORIA'
-    end
-    object cdsGalvRecipesINUSO: TIntegerField
-      FieldName = 'INUSO'
-    end
-    object cdsGalvRecipesDISPONIBILE: TIntegerField
-      FieldName = 'DISPONIBILE'
-    end
-    object cdsGalvRecipesPREDEFINITO: TIntegerField
-      FieldName = 'PREDEFINITO'
-    end
-    object cdsGalvRecipesMICRON: TIntegerField
-      FieldName = 'MICRON'
-    end
-    object cdsGalvRecipesIDCLBR: TIntegerField
-      FieldName = 'IDCLBR'
-    end
-    object cdsGalvRecipesCONTINUE_PERCENTAGE: TIntegerField
-      FieldName = 'CONTINUE_PERCENTAGE'
-    end
-    object cdsGalvRecipesRETREATMENT_PERCENTAGE: TIntegerField
-      FieldName = 'RETREATMENT_PERCENTAGE'
-    end
-  end
   object dsGalvRecipes: TDataSource
-    DataSet = cdsGalvRecipes
-    Left = 579
-    Top = 367
+    DataSet = dmRecipes.tblGalvRecipes
+    Left = 651
+    Top = 111
   end
 end

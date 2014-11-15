@@ -49,12 +49,12 @@ object FormRecipes: TFormRecipes
       OnClick = btnSaveDataClick
     end
     object btnPositions: TButton
-      Left = 316
+      Left = 265
       Top = 9
-      Width = 84
+      Width = 55
       Height = 25
       Anchors = [akTop, akRight]
-      Caption = 'P o s i z i o n i'
+      Caption = 'Posizioni'
       TabOrder = 2
       OnClick = btnPositionsClick
     end
@@ -84,9 +84,19 @@ object FormRecipes: TFormRecipes
       Width = 55
       Height = 25
       Anchors = [akTop, akRight]
-      Caption = 'RINSINGs'
+      Caption = 'Risciacqui'
       TabOrder = 5
       OnClick = btnRinsingTypesClick
+    end
+    object btnGalvanica: TButton
+      Left = 326
+      Top = 9
+      Width = 55
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = 'Galvanica'
+      TabOrder = 6
+      OnClick = btnGalvanicaClick
     end
   end
   object pnlFoot: TPanel

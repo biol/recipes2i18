@@ -48,6 +48,7 @@ type
     siLangDispatcher1: TsiLangDispatcher;
     siLang1: TsiLang;
     btnGoDetails: TButton;
+    btnGalvanica: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure btnSaveDataClick(Sender: TObject);
@@ -62,6 +63,7 @@ type
     procedure lblITAClick(Sender: TObject);
     procedure dbgRecipesTitleClick(Column: TColumn);
     procedure btnGoDetailsClick(Sender: TObject);
+    procedure btnGalvanicaClick(Sender: TObject);
   private
     _booting, _prelDepoRins: boolean;
     procedure doNewRecipe;
@@ -75,13 +77,18 @@ var
   FormRecipes: TFormRecipes;
 
 implementation uses recError, guiRecipeDetails, uEtcXE, guiTblTIPIDROP_07, guiTblTIPIPICK_07,
-  guiTblTIPIRINS_07, dbiRecipes;
+  guiTblTIPIRINS_07, dbiRecipes, guiTblGalvanica;
 
 {$R *.dfm}
 
 procedure TFormRecipes.btnDropTypesClick(Sender: TObject);
 begin
   FormTblTIPIDROP_07.show
+end;
+
+procedure TFormRecipes.btnGalvanicaClick(Sender: TObject);
+begin
+  FormTblGalvanica.show
 end;
 
 procedure TFormRecipes.btnGoDetailsClick(Sender: TObject);
