@@ -51,7 +51,7 @@ object dmRecipes: TdmRecipes
     UpdateOptions.UpdateTableName = 'POSITIONS'
     TableName = 'POSITIONS'
     Left = 256
-    Top = 240
+    Top = 320
   end
   object tblTipiPrelievo: TFDTable
     Active = True
@@ -62,7 +62,7 @@ object dmRecipes: TdmRecipes
     UpdateOptions.UpdateTableName = 'TIPIPREL_07'
     TableName = 'TIPIPREL_07'
     Left = 72
-    Top = 216
+    Top = 272
   end
   object tblTipiDeposito: TFDTable
     Active = True
@@ -73,7 +73,7 @@ object dmRecipes: TdmRecipes
     UpdateOptions.UpdateTableName = 'TIPIDEPO_07'
     TableName = 'TIPIDEPO_07'
     Left = 128
-    Top = 232
+    Top = 312
   end
   object tblTipiRisciacquo: TFDTable
     Active = True
@@ -84,7 +84,7 @@ object dmRecipes: TdmRecipes
     UpdateOptions.UpdateTableName = 'TIPIRISC_07'
     TableName = 'TIPIRISC_07'
     Left = 192
-    Top = 216
+    Top = 272
   end
   object tblGalvRecipes: TFDTable
     Active = True
@@ -93,16 +93,34 @@ object dmRecipes: TdmRecipes
     UpdateOptions.UpdateTableName = 'INDICEELETTROCOLRE'
     TableName = 'INDICEELETTROCOLRE'
     Left = 320
-    Top = 224
+    Top = 280
   end
-  object tblRecipeSteps: TFDTable
-    OnNewRecord = tblRecipeStepsNewRecord
-    MasterSource = FormRecipes.dsRecipes
-    MasterFields = 'IDRICETTA'
+  object qryRecipeSteps: TFDQuery
+    OnNewRecord = qryRecipeStepsNewRecord
     Connection = recipesCnx
-    UpdateOptions.UpdateTableName = 'DETTAGLIORICETTE'
-    TableName = 'DETTAGLIORICETTE'
-    Left = 136
-    Top = 120
+    SQL.Strings = (
+      'select * from DETTAGLIORICETTE'
+      'where IDRICETTA = :IDRICETTA'
+      'order by ID')
+    Left = 128
+    Top = 160
+    ParamData = <
+      item
+        Name = 'IDRICETTA'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+  end
+  object CDSClone: TFDMemTable
+    FetchOptions.AssignedValues = [evMode]
+    FetchOptions.Mode = fmAll
+    ResourceOptions.AssignedValues = [rvSilentMode]
+    ResourceOptions.SilentMode = True
+    UpdateOptions.AssignedValues = [uvCheckRequired]
+    UpdateOptions.CheckRequired = False
+    AutoCommitUpdates = False
+    Left = 168
+    Top = 424
   end
 end

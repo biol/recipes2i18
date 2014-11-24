@@ -8,9 +8,10 @@ unit guiRecipes; {
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, DBXFirebird, DB, SqlExpr, DBCtrls, Grids, DBGrids, ExtCtrls, FMTBcd,
-  Provider, DBClient, midasLib, StdCtrls, Mask, guiTblPositions, siComp;
+  SysUtils, Forms, Dialogs, guiTblPositions, siComp,
+  Vcl.DBCtrls, Vcl.DBGrids, Data.DB,
+  Vcl.Grids, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask, System.Classes, Vcl.Graphics,
+  Vcl.Controls;
 
 type
   TFormRecipes = class(TForm)
@@ -19,7 +20,6 @@ type
     pnlRecipeDetail: TPanel;
     dbgRecipes: TDBGrid;
     DBNavigator1: TDBNavigator;
-    cnxRecipes: TSQLConnection;
     dsRecipes: TDataSource;
     btnSaveData: TButton;
     dbeNOME: TDBEdit;
@@ -54,7 +54,6 @@ type
     procedure btnSaveDataClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure dbgRecipesDblClick(Sender: TObject);
-    procedure cnxRecipesBeforeConnect(Sender: TObject);
     procedure btnPositionsClick(Sender: TObject);
     procedure btnDropTypesClick(Sender: TObject);
     procedure btnPickupTypesClick(Sender: TObject);
@@ -76,7 +75,7 @@ type
 var
   FormRecipes: TFormRecipes;
 
-implementation uses recError, guiRecipeDetails, uEtcXE, guiTblTIPIDROP_07, guiTblTIPIPICK_07,
+implementation uses guiRecipeDetails, uEtcXE, guiTblTIPIDROP_07, guiTblTIPIPICK_07,
   guiTblTIPIRINS_07, dbiRecipes, guiTblGalvanica;
 
 {$R *.dfm}
@@ -141,8 +140,8 @@ begin
   // duplica
   buildNewEmptyRecipe(newID, sNewName);
   with FormRecipeDetails do begin
-    setup(copyFromID, '');   // porto su i dettagli della copyFrom recipe
-    DuplicateRecipe(cdsRecipeDetails, newID);   // preparo di dettagli della new recipe
+    setup(copyFromID, '', '');   // porto su i dettagli della copyFrom recipe
+    dmRecipes.DuplicateRecipe(dmRecipes.qryRecipeSteps, newID);   // preparo di dettagli della new recipe
   end;
 end;
 
@@ -175,12 +174,6 @@ begin
   dmRecipes.buildNewEmptyRecipe(pRecipeID, pName);
 end;
 
-procedure TFormRecipes.cnxRecipesBeforeConnect(Sender: TObject);
-begin with Sender as TSqlConnection do begin
-  params.Values['database'] := absolutizePath(puntoIni.ReadString('config', 'database',
-    changeFileExt(application.ExeName, '.gdb')))
-end end;
-
 procedure TFormRecipes.dbgRecipesDblClick(Sender: TObject); begin goDetails end;
 procedure TFormRecipes.dbgRecipesTitleClick(Column: TColumn);
 begin
@@ -190,9 +183,9 @@ end;
 procedure TFormRecipes.goDetails;
 begin
   with FormRecipeDetails do begin
-    setup(dmRecipes.tblRecipes.fieldByName('IDRICETTA').asInteger,
-          dmRecipes.tblRecipes.fieldByName('NOME').asString);
-
+    setup(dmRecipes.tblRecipes.fieldByName('IDRICETTA'  ).asInteger,
+          dmRecipes.tblRecipes.fieldByName('NOME'       ).asString,
+          dmRecipes.tblRecipes.fieldByName('DESCRIZIONE').asString);
     showModal;
   end;
 end;

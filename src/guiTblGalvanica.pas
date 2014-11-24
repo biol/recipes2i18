@@ -3,9 +3,8 @@ unit guiTblGalvanica;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, Grids, DBGrids, DBCtrls, ExtCtrls, guiRecipeDetails, siComp, siLngLnk,
-  Data.DB;
+  SysUtils, Forms, Dialogs, siComp, siLngLnk, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Vcl.DBCtrls, System.Classes, Vcl.Controls, Vcl.ExtCtrls;
 
 type
   TFormTblGalvanica = class(TForm)

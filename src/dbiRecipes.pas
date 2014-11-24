@@ -22,7 +22,8 @@ type
     tblTipiDeposito: TFDTable;
     tblTipiRisciacquo: TFDTable;
     tblGalvRecipes: TFDTable;
-    tblRecipeSteps: TFDTable;
+    qryRecipeSteps: TFDQuery;
+    CDSClone: TFDMemTable;
     procedure recipesCnxBeforeConnect(Sender: TObject);
     procedure tblRecipesBeforeDelete(DataSet: TDataSet);
     procedure tblRecipesBeforeInsert(DataSet: TDataSet);
@@ -33,13 +34,17 @@ type
     procedure tblTipiRisciacquoNewRecord(DataSet: TDataSet);
     procedure tblTipiPrelievoNewRecord(DataSet: TDataSet);
     procedure tblRecipeStepsNewRecord(DataSet: TDataSet);
+    procedure qryRecipeStepsNewRecord(DataSet: TDataSet);
   private
-    { Private declarations }
+    _RecipeID, _lastStep: integer;
   public
     lastPickupID, lastDropID, lastRinsingID: integer;
     function recipeExists(pRecipeID: integer): boolean;
     procedure buildNewEmptyRecipe(pRecipeID: integer; pName: string);
     procedure doDeleteRecipeDetails(pRecipeID: integer);
+    procedure setupRecipeDetails(pRecipeID: integer);
+    procedure DuplicateRecord(cds: TFDDataSet; pID_fieldName: string = 'ID');
+    procedure DuplicateRecipe(cds: TFDDataSet; pNewRecipeID: integer; pRecipeID_fieldName: string = 'IDRICETTA');
   end;
 
 var
@@ -80,6 +85,15 @@ begin
   end
 end;
 
+procedure TdmRecipes.qryRecipeStepsNewRecord(DataSet: TDataSet);
+begin
+  with dataSet do begin
+    fieldByName('IDRICETTA').AsInteger := _RecipeID;
+    inc(_lastStep, 10);
+    fieldByName('ID').AsInteger := _lastStep;
+  end;
+end;
+
 function TdmRecipes.recipeExists(pRecipeID: integer): boolean;
 begin
   with qryUtils do try
@@ -97,6 +111,19 @@ begin with Sender as TFDConnection do begin
   params.Values['database'] := absolutizePath(puntoIni.ReadString('config', 'database',
     changeFileExt(application.ExeName, '.gdb')))
 end end;
+
+procedure TdmRecipes.setupRecipeDetails(pRecipeID: integer);
+begin
+  _RecipeID := pRecipeID;
+  with qryRecipeSteps do begin
+    close;
+    params.ParamValues['IDRICETTA'] := pRecipeID;
+    open;
+    last;
+    _lastStep := fieldByName('ID').AsInteger;
+    first;
+  end;
+end;
 
 procedure TdmRecipes.tblRecipesBeforeDelete(DataSet: TDataSet);
 var iR: integer;
@@ -182,5 +209,57 @@ begin inc(lastDropID);
     FieldByName('PENDENZA').AsInteger := -1;   // true by default
   end;
 end;
+
+procedure TdmRecipes.DuplicateRecord(cds: TFDDataSet; pID_fieldName: string = 'ID');
+var i: integer; fldFrom, fld: TField;
+begin
+  with cds do if (not active) or EOF then exit;
+  CDSClone.CloneCursor(cds, True);
+  with cds do begin
+    edit;
+    insert;
+    for i := 0 to fieldDefs.count - 1 do begin
+      fldFrom := CDSClone.fields[i];
+      fld := FindField(fieldDefs[i].name);
+      if fld <> nil then begin
+        if compareText(fieldDefs[i].name, pID_fieldName) = 0 then begin
+          // lascio il dato impostato dalla onNewRecord
+        end else fld.assign(fldFrom);
+      end else raise exception.Create(format('Field not found: %s', [fieldDefs[i].name]));
+    end;   // for
+    post;
+  end;
+  CDSClone.Active := False;
+end;
+
+procedure TdmRecipes.DuplicateRecipe(cds: TFDDataSet; pNewRecipeID: integer; pRecipeID_fieldName: string = 'IDRICETTA');
+var i: integer; fldFrom, fld: TField;
+begin
+  with cds do if (not active) or EOF then exit;
+  CDSClone.CloneCursor(cds, True);
+  CDSClone.first;
+  while not CDSClone.EOF do begin
+    if CDSClone.fieldByName(pRecipeID_fieldName).AsInteger <> pNewRecipeID then begin
+      with cds do begin
+        edit;
+        insert;
+        for i := 0 to fieldDefs.count - 1 do begin
+          fldFrom := CDSClone.fields[i];
+          fld := FindField(fieldDefs[i].name);
+          if fld <> nil then begin
+            if compareText(fieldDefs[i].name, pRecipeID_fieldName) = 0 then begin
+              fld.AsInteger := pNewRecipeID;
+            end else fld.assign(fldFrom);
+          end else raise exception.Create(format('Field not found: %s', [fieldDefs[i].name]));
+        end;   // for
+        post;
+      end;
+    end;
+    CDSClone.next;
+  end;
+  CDSClone.Active := False;
+end;
+
+
 
 end.

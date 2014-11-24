@@ -3,36 +3,18 @@ unit guiRecipeDetails;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, FMTBcd, DB, DBClient, Provider, SqlExpr, Grids,
-  DBGrids, DBCtrls, StdCtrls, ComCtrls, Mask, siComp, siLngLnk;
-
+  SysUtils, Forms, Dialogs, siComp, siLngLnk, Data.DB,
+  Vcl.Controls, Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask, System.Classes,
+  Vcl.ExtCtrls, Vcl.Grids, Vcl.DBGrids;
 type
   TFormRecipeDetails = class(TForm)
     pnlHead: TPanel;
     pnlDetail: TPanel;
     pnlFoot: TPanel;
     DBNavigator1: TDBNavigator;
-    dbgDetails: TDBGrid;
-    qdsRecipeDetails: TSQLDataSet;
-    dspRecipeDetails: TDataSetProvider;
-    cdsRecipeDetails: TClientDataSet;
     dsRecipeDetails: TDataSource;
     btnSaveData: TButton;
     dsPositions: TDataSource;
-    cdsRecipeDetailsIDRICETTA: TIntegerField;
-    cdsRecipeDetailsID: TIntegerField;
-    cdsRecipeDetailsPOSIZIONE: TIntegerField;
-    cdsRecipeDetailsTBAGNO: TIntegerField;
-    cdsRecipeDetailsPRIORITA: TIntegerField;
-    cdsRecipeDetailsIDPRELIEVO: TIntegerField;
-    cdsRecipeDetailsIDDEPOSITO: TIntegerField;
-    cdsRecipeDetailsRINSINGID: TIntegerField;
-    cdsRecipeDetailsRINSINGCOUNT: TIntegerField;
-    cdsRecipeDetailsSPRUZZO: TIntegerField;
-    cdsRecipeDetailsPAUSACONTROLLO: TIntegerField;
-    cdsRecipeDetailstankDscr: TStringField;
-    cdsRecipeDetailstankName: TStringField;
     dblcbPosizioneName: TDBLookupComboBox;
     dblcbPosizioneDscr: TDBLookupComboBox;
     Label1: TLabel;
@@ -62,14 +44,11 @@ type
     Label9: TLabel;
     dbeSPRUZZO: TDBEdit;
     dbePAUSACONTROLLO: TDBEdit;
-    cdsRecipeDetailsDESCRIZIONE: TWideStringField;
     siLangLinked1: TsiLangLinked;
-    cdsRecipeDetailsGALVANICID: TIntegerField;
-    cdsRecipeDetailsRESERVECOLORCHECK: TIntegerField;
     dsGalvRecipes: TDataSource;
-    cdsRecipeDetailsGalvDscr: TStringField;
     lblGalvanica: TLabel;
     dblcbGalvanica: TDBLookupComboBox;
+    dbgDetails: TDBGrid;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnSaveDataClick(Sender: TObject);
     procedure cdsRecipeDetailsNewRecord(DataSet: TDataSet);
@@ -97,9 +76,7 @@ type
   , details_OXIMICRONSETPOINTX10
   , details_OXISECONDSSETPOINT: integer;
 
-    procedure setup(pRecipeID: integer; pRecipeName: string);
-    procedure DuplicateRecord(cds: TClientDataSet; pID_fieldName: string = 'ID');
-    procedure DuplicateRecipe(cds: TClientDataSet; pNewRecipeID: integer; pRecipeID_fieldName: string = 'IDRICETTA');
+    procedure setup(pRecipeID: integer; pRecipeName, pRecipeDSCR: string);
   end;
 
 var
@@ -112,42 +89,10 @@ implementation uses guiRecipes, guiTblPositions, guiTblTIPIDROP_07,
 
 { TFormRecipeDetails }
 
-procedure TFormRecipeDetails.setup(pRecipeID: integer; pRecipeName: string);
-begin _RecipeID := pRecipeID;
-  caption := format('R e c i p e   D e t a i l s :   %d) %s', [_RecipeID, pRecipeName]);
-  cdsRecipeDetails.Active := false;
-  qdsRecipeDetails.params.ParamValues['IDRICETTA'] := _RecipeID;
-
-  { eliminato 22/05/2014
-  if details_OXIVOLTSETPOINTX10 <> 0 then begin
-    cbSetpoint.ItemIndex := 0;
-  end else if details_OXIAMPSETPOINT <> 0 then begin
-    cbSetpoint.ItemIndex := 1;
-  end else if details_OXIDENSITYSETPOINTX100 <> 0 then begin
-    cbSetpoint.ItemIndex := 2;
-  end else begin
-    cbSetpoint.ItemIndex := 0;
-    showMessage('please select a setpoint');
-  end;
-  cbSetpointClick(cbSetpoint);
-
-  if details_OXIMICRONSETPOINTX10 <> 0 then begin
-    cbTarget.ItemIndex := 0;
-  end else if details_OXISECONDSSETPOINT <> 0 then begin
-    cbTarget.ItemIndex := 1;
-  end else begin
-    cbTarget.ItemIndex := 0;
-    showMessage('please select a target');
-  end;
-  cbTargetClick(cbTarget);
-  }
-
-  with cdsRecipeDetails do begin
-    Active := true;
-    last;
-    _lastStep := fieldByName('ID').AsInteger;
-    first;
-  end;
+procedure TFormRecipeDetails.setup(pRecipeID: integer; pRecipeName, pRecipeDSCR: string);
+begin
+  dmRecipes.setupRecipeDetails(pRecipeID);
+  caption := format('R e c i p e   D e t a i l s :   %d) %s - %s', [pRecipeID, pRecipeName, pRecipeDSCR]);
 end;
 
 procedure TFormRecipeDetails.btnDropTypesClick(Sender: TObject);
@@ -156,66 +101,7 @@ begin
 end;
 
 procedure TFormRecipeDetails.btnDuplicateClick(Sender: TObject);
-begin DuplicateRecord(cdsRecipeDetails) end;
-
-procedure TFormRecipeDetails.DuplicateRecord(cds: TClientDataSet; pID_fieldName: string = 'ID');
-var CDSClone: TClientDataSet; i: integer; fldFrom, fld: TField;
-begin
-  with cds do if (not active) or EOF then exit;
-  CDSClone := TClientDataSet.Create(self);
-  try
-    CDSClone.CloneCursor(cds, True);
-    with cds do begin
-      edit;
-      insert;
-      for i := 0 to fieldDefs.count - 1 do begin
-        fldFrom := CDSClone.fields[i];
-        fld := FindField(fieldDefs[i].name);
-        if fld <> nil then begin
-          if compareText(fieldDefs[i].name, pID_fieldName) = 0 then begin
-            // lascio il dato impostato dalla onNewRecord
-          end else fld.assign(fldFrom);
-        end else raise exception.Create(format('Field not found: %s', [fieldDefs[i].name]));
-      end;   // for
-      post;
-    end;
-  finally
-    CDSClone.Free;
-  end;
-end;
-
-procedure TFormRecipeDetails.DuplicateRecipe(cds: TClientDataSet; pNewRecipeID: integer; pRecipeID_fieldName: string = 'IDRICETTA');
-var CDSClone: TClientDataSet; i: integer; fldFrom, fld: TField;
-begin
-  with cds do if (not active) or EOF then exit;
-  CDSClone := TClientDataSet.Create(self);
-  try
-    CDSClone.CloneCursor(cds, True);
-    CDSClone.first;
-    while not CDSClone.EOF do begin
-      if CDSClone.fieldByName(pRecipeID_fieldName).AsInteger <> pNewRecipeID then begin
-        with cds do begin
-          edit;
-          insert;
-          for i := 0 to fieldDefs.count - 1 do begin
-            fldFrom := CDSClone.fields[i];
-            fld := FindField(fieldDefs[i].name);
-            if fld <> nil then begin
-              if compareText(fieldDefs[i].name, pRecipeID_fieldName) = 0 then begin
-                fld.AsInteger := pNewRecipeID;
-              end else fld.assign(fldFrom);
-            end else raise exception.Create(format('Field not found: %s', [fieldDefs[i].name]));
-          end;   // for
-          post;
-        end;
-      end;
-      CDSClone.next;
-    end;
-  finally
-    CDSClone.Free;
-  end;
-  saveData;   close
-end;
+begin dmRecipes.DuplicateRecord(dmRecipes.qryRecipeSteps) end;
 
 procedure TFormRecipeDetails.btnPickupTypesClick(Sender: TObject);
 begin
@@ -230,7 +116,7 @@ end;
 procedure TFormRecipeDetails.btnRenumClick(Sender: TObject);
 var i: integer;
 begin   i := 0;
-  with cdsRecipeDetails do begin
+  with dmRecipes.qryRecipeSteps do begin
     first;
     if EOF then exit;
     while not EOF do Begin
@@ -271,7 +157,6 @@ procedure TFormRecipeDetails.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   saveData(true);
-  cdsRecipeDetails.Close;
 end;
 
 procedure TFormRecipeDetails.FormCreate(Sender: TObject);
@@ -303,36 +188,8 @@ begin
 end;
 
 procedure TFormRecipeDetails.saveData(pAsk: boolean);
-var f: extended;
 begin
-  with cdsRecipeDetails do begin
-    checkBrowseMode;
-    if changeCount > 0 then begin
-      if pAsk and (messageDlg('save data ?', mtConfirmation, [mbOK, mbCancel], 0) <> mrOK) then exit;
-      applyUpdates(0);
-    end;
-  end;
-
-(*  // setpoint                                eliminato 22/05/2014
-  details_OXIVOLTSETPOINTX10     := 0;
-  details_OXIAMPSETPOINT         := 0;
-  details_OXIDENSITYSETPOINTX100 := 0;
-  f := strToFloat(EditSetpoint.Text);
-  case cbSetpoint.itemIndex of
-  0: {volt   x 10}   begin details_OXIVOLTSETPOINTX10     := round(f * 10)   end;
-  1: {ampere x 1000} begin details_OXIAMPSETPOINT         := round(f * 1000) end;
-  2: {a/dm2  x 100}  begin details_OXIDENSITYSETPOINTX100 := round(f * 100 ) end;
-  end;
-
-  // target
-  details_OXIMICRONSETPOINTX10 := 0;
-  details_OXISECONDSSETPOINT   := 0;
-  f := strToFloat(EditTarget.Text);
-  case cbTarget.itemIndex of
-  0: {micron x 10}  begin details_OXIMICRONSETPOINTX10 := round(f * 10) end;
-  1: {seconds x 60} begin details_OXISECONDSSETPOINT   := round(f * 60) end;
-  end;
-*)
+  dmRecipes.qryRecipeSteps.checkBrowseMode;
 end;
 
 end.
