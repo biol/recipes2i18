@@ -91,7 +91,6 @@ implementation uses guiRecipes, guiTblPositions, guiTblTIPIDROP_07,
 
 procedure TFormRecipeDetails.setup(pRecipeID: integer; pRecipeName, pRecipeDSCR: string);
 begin
-  dmRecipes.setupRecipeDetails(pRecipeID);
   caption := format('R e c i p e   D e t a i l s :   %d) %s - %s', [pRecipeID, pRecipeName, pRecipeDSCR]);
 end;
 
@@ -101,7 +100,7 @@ begin
 end;
 
 procedure TFormRecipeDetails.btnDuplicateClick(Sender: TObject);
-begin dmRecipes.DuplicateRecord(dmRecipes.qryRecipeSteps) end;
+begin dmRecipes.DuplicateRecord(dmRecipes.tblRecipeSteps) end;
 
 procedure TFormRecipeDetails.btnPickupTypesClick(Sender: TObject);
 begin
@@ -116,7 +115,7 @@ end;
 procedure TFormRecipeDetails.btnRenumClick(Sender: TObject);
 var i: integer;
 begin   i := 0;
-  with dmRecipes.qryRecipeSteps do begin
+  with dmRecipes.tblRecipeSteps do begin
     first;
     if EOF then exit;
     while not EOF do Begin
@@ -189,7 +188,7 @@ end;
 
 procedure TFormRecipeDetails.saveData(pAsk: boolean);
 begin
-  dmRecipes.qryRecipeSteps.checkBrowseMode;
+  dmRecipes.tblRecipeSteps.checkBrowseMode;
 end;
 
 end.

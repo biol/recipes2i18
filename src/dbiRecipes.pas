@@ -22,8 +22,29 @@ type
     tblTipiDeposito: TFDTable;
     tblTipiRisciacquo: TFDTable;
     tblGalvRecipes: TFDTable;
-    qryRecipeSteps: TFDQuery;
     CDSClone: TFDMemTable;
+    tblGalvRecipeSteps: TFDTable;
+    dsGalvRecipesLink: TDataSource;
+    dsRecipesLink: TDataSource;
+    tblRecipeSteps: TFDTable;
+    tblRecipeStepsIDRICETTA: TIntegerField;
+    tblRecipeStepsID: TIntegerField;
+    tblRecipeStepsDESCRIZIONE: TWideStringField;
+    tblRecipeStepsPOSIZIONE: TIntegerField;
+    tblRecipeStepsTBAGNO: TIntegerField;
+    tblRecipeStepsPRIORITA: TIntegerField;
+    tblRecipeStepsIDPRELIEVO: TIntegerField;
+    tblRecipeStepsIDDEPOSITO: TIntegerField;
+    tblRecipeStepsRINSINGID: TIntegerField;
+    tblRecipeStepsRINSINGCOUNT: TIntegerField;
+    tblRecipeStepsSPRUZZO: TIntegerField;
+    tblRecipeStepsPAUSACONTROLLO: TIntegerField;
+    tblRecipeStepsGALVANICID: TIntegerField;
+    tblRecipeStepsRESERVECOLORCHECK: TIntegerField;
+    tblRecipeStepsposName: TStringField;
+    tblRecipeStepsposDSCR: TStringField;
+    tblRecipeStepsgalvNome: TStringField;
+    tblRecipeStepsgalvDscr: TStringField;
     procedure recipesCnxBeforeConnect(Sender: TObject);
     procedure tblRecipesBeforeDelete(DataSet: TDataSet);
     procedure tblRecipesBeforeInsert(DataSet: TDataSet);
@@ -34,7 +55,6 @@ type
     procedure tblTipiRisciacquoNewRecord(DataSet: TDataSet);
     procedure tblTipiPrelievoNewRecord(DataSet: TDataSet);
     procedure tblRecipeStepsNewRecord(DataSet: TDataSet);
-    procedure qryRecipeStepsNewRecord(DataSet: TDataSet);
   private
     _RecipeID, _lastStep: integer;
   public
@@ -42,7 +62,6 @@ type
     function recipeExists(pRecipeID: integer): boolean;
     procedure buildNewEmptyRecipe(pRecipeID: integer; pName: string);
     procedure doDeleteRecipeDetails(pRecipeID: integer);
-    procedure setupRecipeDetails(pRecipeID: integer);
     procedure DuplicateRecord(cds: TFDDataSet; pID_fieldName: string = 'ID');
     procedure DuplicateRecipe(cds: TFDDataSet; pNewRecipeID: integer; pRecipeID_fieldName: string = 'IDRICETTA');
   end;
@@ -85,15 +104,6 @@ begin
   end
 end;
 
-procedure TdmRecipes.qryRecipeStepsNewRecord(DataSet: TDataSet);
-begin
-  with dataSet do begin
-    fieldByName('IDRICETTA').AsInteger := _RecipeID;
-    inc(_lastStep, 10);
-    fieldByName('ID').AsInteger := _lastStep;
-  end;
-end;
-
 function TdmRecipes.recipeExists(pRecipeID: integer): boolean;
 begin
   with qryUtils do try
@@ -111,19 +121,6 @@ begin with Sender as TFDConnection do begin
   params.Values['database'] := absolutizePath(puntoIni.ReadString('config', 'database',
     changeFileExt(application.ExeName, '.gdb')))
 end end;
-
-procedure TdmRecipes.setupRecipeDetails(pRecipeID: integer);
-begin
-  _RecipeID := pRecipeID;
-  with qryRecipeSteps do begin
-    close;
-    params.ParamValues['IDRICETTA'] := pRecipeID;
-    open;
-    last;
-    _lastStep := fieldByName('ID').AsInteger;
-    first;
-  end;
-end;
 
 procedure TdmRecipes.tblRecipesBeforeDelete(DataSet: TDataSet);
 var iR: integer;

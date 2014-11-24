@@ -1850,8 +1850,8 @@ object FormRecipes: TFormRecipes
   end
   object dsRecipes: TDataSource
     DataSet = dmRecipes.tblRecipes
-    Left = 541
-    Top = 152
+    Left = 637
+    Top = 80
   end
   object siLangDispatcher1: TsiLangDispatcher
     ActiveLanguage = 1

@@ -76,7 +76,7 @@ var
   FormRecipes: TFormRecipes;
 
 implementation uses guiRecipeDetails, uEtcXE, guiTblTIPIDROP_07, guiTblTIPIPICK_07,
-  guiTblTIPIRINS_07, dbiRecipes, guiTblGalvanica;
+  guiTblTIPIRINS_07, dbiRecipes, guiTblGalvanica, guiGalvRecipes;
 
 {$R *.dfm}
 
@@ -87,7 +87,8 @@ end;
 
 procedure TFormRecipes.btnGalvanicaClick(Sender: TObject);
 begin
-  FormTblGalvanica.show
+  // FormGalvRecipes.show
+  FormTblGalvanica.Show
 end;
 
 procedure TFormRecipes.btnGoDetailsClick(Sender: TObject);
@@ -141,7 +142,7 @@ begin
   buildNewEmptyRecipe(newID, sNewName);
   with FormRecipeDetails do begin
     setup(copyFromID, '', '');   // porto su i dettagli della copyFrom recipe
-    dmRecipes.DuplicateRecipe(dmRecipes.qryRecipeSteps, newID);   // preparo di dettagli della new recipe
+    dmRecipes.DuplicateRecipe(dmRecipes.tblRecipeSteps, newID);   // preparo di dettagli della new recipe
   end;
 end;
 

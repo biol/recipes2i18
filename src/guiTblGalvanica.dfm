@@ -2,7 +2,7 @@ object FormTblGalvanica: TFormTblGalvanica
   Left = 0
   Top = 0
   Caption = 'Galvanica'
-  ClientHeight = 492
+  ClientHeight = 557
   ClientWidth = 731
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,6 +13,15 @@ object FormTblGalvanica: TFormTblGalvanica
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
+  object Splitter1: TSplitter
+    Left = 0
+    Top = 467
+    Width = 731
+    Height = 5
+    Cursor = crVSplit
+    Align = alBottom
+    ExplicitTop = 409
+  end
   object Panel1: TPanel
     Left = 0
     Top = 0
@@ -25,7 +34,7 @@ object FormTblGalvanica: TFormTblGalvanica
       Top = 8
       Width = 135
       Height = 25
-      DataSource = dsPositions
+      DataSource = dsGalvRecipes
       VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbRefresh]
       TabOrder = 0
     end
@@ -34,11 +43,25 @@ object FormTblGalvanica: TFormTblGalvanica
     Left = 0
     Top = 41
     Width = 731
-    Height = 451
+    Height = 426
     Align = alClient
-    DataSource = dsPositions
+    DataSource = dsGalvRecipes
     ReadOnly = True
     TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+  end
+  object DBGrid2: TDBGrid
+    Left = 0
+    Top = 472
+    Width = 731
+    Height = 85
+    Align = alBottom
+    DataSource = dsGalvRecipeSteps
+    TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -11
@@ -90,8 +113,8 @@ object FormTblGalvanica: TFormTblGalvanica
       'DataField'
       'KeyField'
       'ListField')
-    Left = 552
-    Top = 96
+    Left = 48
+    Top = 128
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A00540046006F0072006D00540062006C00470061006C007600
@@ -173,9 +196,14 @@ object FormTblGalvanica: TFormTblGalvanica
       52005300450054000100010001000100440045004600410055004C0054005F00
       43004800410052005300450054000D000A00}
   end
-  object dsPositions: TDataSource
+  object dsGalvRecipes: TDataSource
     DataSet = dmRecipes.tblGalvRecipes
-    Left = 624
-    Top = 72
+    Left = 560
+    Top = 120
+  end
+  object dsGalvRecipeSteps: TDataSource
+    DataSet = dmRecipes.tblGalvRecipeSteps
+    Left = 552
+    Top = 400
   end
 end

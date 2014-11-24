@@ -421,14 +421,14 @@ object FormRecipeDetails: TFormRecipeDetails
       end
       item
         Expanded = False
-        FieldName = 'tankName'
+        FieldName = 'posName'
         Title.Caption = 'tank'
         Width = 50
         Visible = True
       end
       item
         Expanded = False
-        FieldName = 'tankDscr'
+        FieldName = 'posDSCR'
         ReadOnly = True
         Title.Caption = 'description'
         Width = 170
@@ -492,6 +492,15 @@ object FormRecipeDetails: TFormRecipeDetails
         Visible = True
       end
       item
+        Alignment = taCenter
+        Expanded = False
+        FieldName = 'RESERVECOLORCHECK'
+        Title.Alignment = taCenter
+        Title.Caption = 'RCC'
+        Width = 30
+        Visible = True
+      end
+      item
         Expanded = False
         FieldName = 'SPRUZZO'
         Title.Alignment = taRightJustify
@@ -509,23 +518,20 @@ object FormRecipeDetails: TFormRecipeDetails
       end
       item
         Expanded = False
-        FieldName = 'GalvDscr'
+        FieldName = 'galvNome'
         Title.Caption = 'Galvanic Recipe'
         Width = 160
         Visible = True
       end
       item
-        Alignment = taCenter
         Expanded = False
-        FieldName = 'RESERVECOLORCHECK'
-        Title.Alignment = taCenter
-        Title.Caption = 'RCC'
-        Width = 30
+        FieldName = 'galvDscr'
+        Title.Caption = 'Galvanic Description'
         Visible = True
       end>
   end
   object dsRecipeDetails: TDataSource
-    DataSet = dmRecipes.qryRecipeSteps
+    DataSet = dmRecipes.tblRecipeSteps
     Left = 261
     Top = 122
   end

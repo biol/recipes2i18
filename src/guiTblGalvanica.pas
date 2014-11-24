@@ -12,7 +12,10 @@ type
     DBNavigator1: TDBNavigator;
     DBGrid1: TDBGrid;
     siLangLinked1: TsiLangLinked;
-    dsPositions: TDataSource;
+    dsGalvRecipes: TDataSource;
+    dsGalvRecipeSteps: TDataSource;
+    Splitter1: TSplitter;
+    DBGrid2: TDBGrid;
   private
     { Private declarations }
   public
