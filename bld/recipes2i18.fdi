@@ -1,7 +1,14 @@
 [FormRecipes]
 position=0
 windowState=0
-top=200
-left=743
+top=159
+left=544
 height=590
 width=720
+[FormGalvRecipes]
+position=0
+windowState=0
+top=175
+left=175
+height=600
+width=800

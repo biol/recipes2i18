@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, DB, StdCtrls, ExtCtrls, Mask, DBCtrls, Buttons;
+  Dialogs, DB, StdCtrls, ExtCtrls, Mask, DBCtrls, Buttons, siComp, siLngLnk;
 
 type
   TFormSetpointCTRL = class(TForm)
@@ -31,6 +31,7 @@ type
     rgUM: TRadioGroup;
     rgElePhase: TRadioGroup;
     Label1: TLabel;
+    siLangLinked1: TsiLangLinked;
     procedure btnOKClick(Sender: TObject);
     procedure dsDettaglioDataChange(Sender: TObject; Field: TField);
     procedure rgUMClick(Sender: TObject);
@@ -44,7 +45,7 @@ type
 var
   FormSetpointCTRL: TFormSetpointCTRL;
 
-implementation uses dbiRecipes;
+implementation uses dbiRecipes, guiRecipes;
 {$R *.dfm}
 
 procedure TFormSetpointCTRL.btnOKClick(Sender: TObject);
@@ -66,22 +67,24 @@ end;
 procedure TFormSetpointCTRL.hideFields(pOxi, pDIGI, pBru: boolean);
 begin _isOxi := pOxi; 
   with rgUM do begin
-    Visible := pOXI;
+    Visible := True; // was pOXI;
+    Enabled := pOXI;
     items.Clear;
     items.Add('Volt');
     if pOXI then begin
       items.Add('KAmpere');
       items.Add('Ampere/dm²');
-    end;
-    ItemIndex := dsDettaglio.dataset.fieldByName('UNIT_MEASURE').AsInteger;
+      ItemIndex := dsDettaglio.dataset.fieldByName('UNIT_MEASURE').AsInteger;
+    end else ItemIndex := 0;
   end;
   with rgElePhase do begin
     Visible := not pOXI;
     ItemIndex := dsDettaglio.dataset.fieldByName('ELE_PHASE').AsInteger;
   end;
-  lblPausa  .Visible := not pOXI;    DBEditPausa    .Visible := not pOXI;
-  lblWACPOS .Visible := not pOXI;    DBEditWACPOS   .Visible := not pOXI;
-  lblWACNEG .Visible := not pOXI;    DBEditWACNEG   .Visible := not pOXI;
+  lblPausa   .Visible := not pOXI;
+  DBEditPausa.Visible := not pOXI;
+  lblWACPOS  .Visible := not (pOxi or pBru);   DBEditWACPOS.Visible := not (pOxi or pBru);
+  lblWACNEG  .Visible := not (pOxi or pBru);   DBEditWACNEG.Visible := not (pOxi or pBru);
 end;
 
 procedure TFormSetpointCTRL.rgElePhaseClick(Sender: TObject);

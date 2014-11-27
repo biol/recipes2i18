@@ -1,20 +1,21 @@
 object dmRecipes: TdmRecipes
   OldCreateOrder = False
-  Height = 508
-  Width = 937
+  OnCreate = DataModuleCreate
+  Height = 407
+  Width = 707
   object FDPhysFBDriverLink1: TFDPhysFBDriverLink
-    Left = 338
+    Left = 146
     Top = 16
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 338
-    Top = 72
+    Left = 226
+    Top = 48
   end
   object FDGUIxErrorDialog1: TFDGUIxErrorDialog
     Provider = 'Forms'
-    Left = 338
-    Top = 128
+    Left = 298
+    Top = 16
   end
   object recipesCnx: TFDConnection
     Params.Strings = (
@@ -26,12 +27,11 @@ object dmRecipes: TdmRecipes
     Connected = True
     LoginPrompt = False
     BeforeConnect = recipesCnxBeforeConnect
-    Left = 48
-    Top = 40
+    Left = 32
+    Top = 16
   end
   object tblRecipes: TFDTable
     Active = True
-    BeforeInsert = tblRecipesBeforeInsert
     BeforeDelete = tblRecipesBeforeDelete
     IndexFieldNames = 'IDRICETTA'
     Connection = recipesCnx
@@ -42,8 +42,8 @@ object dmRecipes: TdmRecipes
   end
   object qryUtils: TFDQuery
     Connection = recipesCnx
-    Left = 168
-    Top = 40
+    Left = 16
+    Top = 200
   end
   object tblPositions: TFDTable
     Active = True
@@ -89,39 +89,89 @@ object dmRecipes: TdmRecipes
   end
   object tblGalvRecipes: TFDTable
     Active = True
+    BeforeDelete = tblGalvRecipesBeforeDelete
     IndexName = 'INDICEELETTROCOLORE_PRIMARY'
     Connection = recipesCnx
     UpdateOptions.UpdateTableName = 'INDICEELETTROCOLRE'
     TableName = 'INDICEELETTROCOLRE'
-    Left = 584
-    Top = 144
-  end
-  object CDSClone: TFDMemTable
-    FetchOptions.AssignedValues = [evMode]
-    FetchOptions.Mode = fmAll
-    ResourceOptions.AssignedValues = [rvSilentMode]
-    ResourceOptions.SilentMode = True
-    UpdateOptions.AssignedValues = [uvCheckRequired]
-    UpdateOptions.CheckRequired = False
-    AutoCommitUpdates = False
-    Left = 168
-    Top = 424
+    Left = 480
+    Top = 32
   end
   object tblGalvRecipeSteps: TFDTable
     Active = True
+    OnCalcFields = tblGalvRecipeStepsCalcFields
     IndexName = 'DETTELOXI_PRIMARY'
     MasterSource = dsGalvRecipesLink
     MasterFields = 'IDELETTROCOLORE'
     Connection = recipesCnx
     UpdateOptions.UpdateTableName = 'DETTELOXI'
     TableName = 'DETTELOXI'
-    Left = 768
-    Top = 224
+    Left = 608
+    Top = 96
+    object tblGalvRecipeStepsIDELETTROCOLORE: TIntegerField
+      FieldName = 'IDELETTROCOLORE'
+      Origin = 'IDELETTROCOLORE'
+      Required = True
+    end
+    object tblGalvRecipeStepsPRO: TIntegerField
+      FieldName = 'PRO'
+      Origin = 'PRO'
+      Required = True
+    end
+    object tblGalvRecipeStepsDSCR: TWideStringField
+      FieldName = 'DSCR'
+      Origin = 'DSCR'
+      Size = 32
+    end
+    object tblGalvRecipeStepsPAUSE_SECS: TIntegerField
+      FieldName = 'PAUSE_SECS'
+      Origin = 'PAUSE_SECS'
+    end
+    object tblGalvRecipeStepsRAMP_SECS: TIntegerField
+      FieldName = 'RAMP_SECS'
+      Origin = 'RAMP_SECS'
+    end
+    object tblGalvRecipeStepsDWELL_SECS: TIntegerField
+      FieldName = 'DWELL_SECS'
+      Origin = 'DWELL_SECS'
+    end
+    object tblGalvRecipeStepsSETPOINT: TSingleField
+      FieldName = 'SETPOINT'
+      Origin = 'SETPOINT'
+    end
+    object tblGalvRecipeStepsUNIT_MEASURE: TIntegerField
+      FieldName = 'UNIT_MEASURE'
+      Origin = 'UNIT_MEASURE'
+    end
+    object tblGalvRecipeStepsELE_PHASE: TIntegerField
+      FieldName = 'ELE_PHASE'
+      Origin = 'ELE_PHASE'
+    end
+    object tblGalvRecipeStepsWACPOS: TIntegerField
+      FieldName = 'WACPOS'
+      Origin = 'WACPOS'
+    end
+    object tblGalvRecipeStepsWACNEG: TIntegerField
+      FieldName = 'WACNEG'
+      Origin = 'WACNEG'
+    end
+    object tblGalvRecipeStepsTANK_CHANGED: TIntegerField
+      FieldName = 'TANK_CHANGED'
+      Origin = 'TANK_CHANGED'
+    end
+    object tblGalvRecipeStepsAUXILIARY_REX: TIntegerField
+      FieldName = 'AUXILIARY_REX'
+      Origin = 'AUXILIARY_REX'
+    end
+    object tblGalvRecipeStepsFROM_REF_VAL: TIntegerField
+      FieldName = 'FROM_REF_VAL'
+      Origin = 'FROM_REF_VAL'
+    end
   end
   object dsGalvRecipesLink: TDataSource
     DataSet = tblGalvRecipes
-    Left = 672
-    Top = 184
+    Left = 536
+    Top = 64
   end
   object dsRecipesLink: TDataSource
     DataSet = tblRecipes
@@ -238,5 +288,36 @@ object dmRecipes: TdmRecipes
       Size = 100
       Lookup = True
     end
+  end
+  object fdqEleRecipeStepsTotalSecs: TFDQuery
+    Connection = recipesCnx
+    SQL.Strings = (
+      'select sum('
+      '    DETTELOXI.PAUSE_SECS '
+      '  + DETTELOXI.RAMP_SECS '
+      '  + DETTELOXI.DWELL_SECS'
+      ') TOTALE'
+      'from DETTELOXI'
+      'where DETTELOXI.IDELETTROCOLORE = :IDELETTROCOLORE')
+    Left = 400
+    Top = 112
+    ParamData = <
+      item
+        Name = 'IDELETTROCOLORE'
+        ParamType = ptInput
+      end>
+  end
+  object fdqDeleteEleRecipeSteps: TFDQuery
+    Connection = recipesCnx
+    SQL.Strings = (
+      'delete from DETTELOXI'
+      'where IDELETTROCOLORE = :IDELETTROCOLORE')
+    Left = 400
+    Top = 176
+    ParamData = <
+      item
+        Name = 'IDELETTROCOLORE'
+        ParamType = ptInput
+      end>
   end
 end

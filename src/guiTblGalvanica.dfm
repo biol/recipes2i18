@@ -3,7 +3,7 @@ object FormTblGalvanica: TFormTblGalvanica
   Top = 0
   Caption = 'Galvanica'
   ClientHeight = 557
-  ClientWidth = 731
+  ClientWidth = 1062
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,19 +16,21 @@ object FormTblGalvanica: TFormTblGalvanica
   object Splitter1: TSplitter
     Left = 0
     Top = 467
-    Width = 731
+    Width = 1062
     Height = 5
     Cursor = crVSplit
     Align = alBottom
     ExplicitTop = 409
+    ExplicitWidth = 731
   end
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 731
+    Width = 1062
     Height = 41
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 787
     object DBNavigator1: TDBNavigator
       Left = 8
       Top = 8
@@ -42,7 +44,7 @@ object FormTblGalvanica: TFormTblGalvanica
   object DBGrid1: TDBGrid
     Left = 0
     Top = 41
-    Width = 731
+    Width = 1062
     Height = 426
     Align = alClient
     DataSource = dsGalvRecipes
@@ -57,7 +59,7 @@ object FormTblGalvanica: TFormTblGalvanica
   object DBGrid2: TDBGrid
     Left = 0
     Top = 472
-    Width = 731
+    Width = 1062
     Height = 85
     Align = alBottom
     DataSource = dsGalvRecipeSteps

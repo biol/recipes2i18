@@ -19,7 +19,6 @@ type
   TFormTblTIPIDROP_07 = class(TForm)
     pnlHead: TPanel;
     DBNavigator1: TDBNavigator;
-    btnSaveData: TButton;
     pnlFoot: TPanel;
     DBNavigator2: TDBNavigator;
     Label18: TLabel;
@@ -79,10 +78,15 @@ type
     DBGrid2: TDBGrid;
     dsTipiDeposito: TDataSource;
     siLangLinked1: TsiLangLinked;
+    lblNewRecipe: TLabel;
+    editNewRecipeID: TEdit;
+    lblCopyFromID: TLabel;
+    EditCopyFromID: TEdit;
+    btnNewRecipe: TButton;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure btnSaveDataClick(Sender: TObject);
+    procedure btnNewRecipeClick(Sender: TObject);
   private
-    procedure saveData(pAsk: boolean = false);
+    procedure saveData;
   public
     { Public declarations }
   end;
@@ -96,26 +100,53 @@ implementation uses dbiRecipes;
 
 { TFormTblTIPIDROP_07 }
 
-procedure TFormTblTIPIDROP_07.btnSaveDataClick(Sender: TObject);
+procedure TFormTblTIPIDROP_07.btnNewRecipeClick(Sender: TObject);
+var newID, copyFromID: integer;   sNewName: string;
+begin
+  saveData;
+  newID := strToIntDef(editNewRecipeID.Text, 0);   editNewRecipeID.Text := intToStr(newID);
+  // verifica NON esistenza di newID e che sia > 0
+  if newID <= 0 then begin
+    showMessage('you can only use positive integers for NEW type ID');   exit
+  end;
+  if dmRecipes.typeExists('TIPIDEPO_07', newID) then begin
+    showMessage(format('NEW type %d already exists.', [newID]));   exit
+  end;
+
+  copyFromID := strToIntDef(EditCopyFromID .Text, 0);   EditCopyFromID .Text := intToStr(copyFromID);
+  // verifica esistenza di copyFromID se e solo se è > 0
+  if (copyFromID > 0) and (not dmRecipes.typeExists('TIPIDEPO_07', copyFromID)) then begin
+    showMessage(format('"copy from" type %d does not exist.', [copyFromID]));   exit
+  end;
+
+  // se l'utente conferma ... facciamo un paio di query di inserimento ...
+  if (copyFromID > 0) then begin
+    if messageDlg(format('Confirm copying existing type %d to NEW type %d ?',
+      [copyFromID, newID]), mtConfirmation, [mbOK, mbCancel], 0) <> mrOK then exit;
+      sNewName := siLangLinked1.GetTextOrDefault('IDS_6' (* 'copy of' *) ) + intToStr(copyFromID);
+  end else begin
+    if messageDlg(format('Confirm creating a new EMPTY type with ID %d ?',
+      [newID]), mtConfirmation, [mbOK, mbCancel], 0) <> mrOK then exit;
+      sNewName := 'new type';
+  end;
+
+  if copyFromID = 0 then begin
+    dmRecipes.buildNewEmptyType('TIPIDEPO_07', newID, sNewName);
+    exit;  // bona lè
+  end;
+
+  // duplica
+  dmRecipes.copyTypeFromTo('TIPIDEPO_07', copyFromID, newID);   // preparo di dettagli della new recipe
+end;
+
+procedure TFormTblTIPIDROP_07.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   saveData
 end;
 
-procedure TFormTblTIPIDROP_07.FormClose(Sender: TObject;
-  var Action: TCloseAction);
+procedure TFormTblTIPIDROP_07.saveData;
 begin
-  saveData(true)
-end;
-
-procedure TFormTblTIPIDROP_07.saveData(pAsk: boolean);
-begin
-  with dsTipiDeposito.dataSet as TFDTable do begin
-    checkBrowseMode;
-    if changeCount > 0 then begin
-      if pAsk and (messageDlg('save data ?', mtConfirmation, [mbOK, mbCancel], 0) <> mrOK) then exit;
-      applyUpdates(0);
-    end;
-  end;
+  dmRecipes.tblTipiDeposito.checkBrowseMode;
 end;
 
 end.

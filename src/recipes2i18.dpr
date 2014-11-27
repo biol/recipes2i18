@@ -11,20 +11,22 @@ uses
   guiTblTIPIRINS_07 in 'guiTblTIPIRINS_07.pas' {FormTblTIPIRINS_07},
   CheckPreviousXE in '..\..\..\commonXE\CheckPreviousXE.pas',
   dbiRecipes in 'dbiRecipes.pas' {dmRecipes: TDataModule},
-  guiTblGalvanica in 'guiTblGalvanica.pas' {FormTblGalvanica};
+  guiGalvRecipes in 'guiGalvRecipes.pas' {FormGalvRecipes},
+  guiSetpointCTRL in 'guiSetpointCTRL.pas' {FormSetpointCTRL};
 
 {$R *.res}
 
 begin if not CheckPreviousXE.RestoreIfRunning(Application.Handle) then begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TdmRecipes, dmRecipes);
   Application.CreateForm(TFormRecipes, FormRecipes);
   Application.CreateForm(TFormRecipeDetails, FormRecipeDetails);
   Application.CreateForm(TFormTblPositions, FormTblPositions);
   Application.CreateForm(TFormTblTIPIDROP_07, FormTblTIPIDROP_07);
   Application.CreateForm(TFormTblTIPIPICK_07, FormTblTIPIPICK_07);
   Application.CreateForm(TFormTblTIPIRINS_07, FormTblTIPIRINS_07);
-  Application.CreateForm(TdmRecipes, dmRecipes);
-  Application.CreateForm(TFormTblGalvanica, FormTblGalvanica);
+  Application.CreateForm(TFormGalvRecipes, FormGalvRecipes);
+  Application.CreateForm(TFormSetpointCTRL, FormSetpointCTRL);
   Application.Run;
 end end.

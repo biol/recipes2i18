@@ -21,7 +21,6 @@ type
     dbgRecipes: TDBGrid;
     DBNavigator1: TDBNavigator;
     dsRecipes: TDataSource;
-    btnSaveData: TButton;
     dbeNOME: TDBEdit;
     Label1: TLabel;
     Label3: TLabel;
@@ -32,26 +31,25 @@ type
     lblRel: TLabel;
     lblGdb: TLabel;
     DBNavigator2: TDBNavigator;
-    btnPositions: TButton;
     lblITA: TLabel;
     lblENG: TLabel;
-    btnDropTypes: TButton;
-    btnPickupTypes: TButton;
-    btnRinsingTypes: TButton;
-    lblNewRecipe: TLabel;
-    editNewRecipeID: TEdit;
-    EditCopyFromID: TEdit;
-    lblCopyFromID: TLabel;
-    btnNewRecipe: TButton;
     lblSTR: TLabel;
     ImageLogo: TImage;
     siLangDispatcher1: TsiLangDispatcher;
     siLang1: TsiLang;
     btnGoDetails: TButton;
+    btnPositions: TButton;
     btnGalvanica: TButton;
+    btnDropTypes: TButton;
+    btnPickupTypes: TButton;
+    btnRinsingTypes: TButton;
+    lblNewRecipe: TLabel;
+    lblCopyFromID: TLabel;
+    editNewRecipeID: TEdit;
+    EditCopyFromID: TEdit;
+    btnNewRecipe: TButton;
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
-    procedure btnSaveDataClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure dbgRecipesDblClick(Sender: TObject);
     procedure btnPositionsClick(Sender: TObject);
@@ -67,9 +65,8 @@ type
     _booting, _prelDepoRins: boolean;
     procedure doNewRecipe;
   public
-    function saveData(pAsk: boolean = false): boolean;
+    procedure saveData;
     procedure goDetails;
-    procedure buildNewEmptyRecipe(pRecipeID: integer; pName: string);
   end;
 
 var
@@ -87,8 +84,7 @@ end;
 
 procedure TFormRecipes.btnGalvanicaClick(Sender: TObject);
 begin
-  // FormGalvRecipes.show
-  FormTblGalvanica.Show
+  FormGalvRecipes.show
 end;
 
 procedure TFormRecipes.btnGoDetailsClick(Sender: TObject);
@@ -96,15 +92,14 @@ begin
   goDetails
 end;
 
-procedure TFormRecipes.btnNewRecipeClick(Sender: TObject); begin doNewRecipe end;
+procedure TFormRecipes.btnNewRecipeClick(Sender: TObject);
+begin
+  doNewRecipe
+end;
 
 procedure TFormRecipes.doNewRecipe;
 var newID, copyFromID: integer;   sNewName: string;
-begin
-  if not saveData(true) then begin
-    showMessage('ERROR saving data ... please investigate and retry');
-    exit;
-  end;
+begin  saveData;
 
   newID := strToIntDef(editNewRecipeID.Text, 0);   editNewRecipeID.Text := intToStr(newID);
   // verifica NON esistenza di newID e che sia > 0
@@ -119,7 +114,6 @@ begin
   // verifica esistenza di copyFromID se e solo se è > 0
   if (copyFromID > 0) and (not dmRecipes.recipeExists(copyFromID)) then begin
     showMessage(format(siLang1.GetTextOrDefault('IDS_4' (* '"copy from" recipe %d does not exist.' *) ), [copyFromID]));   exit
-  end else begin   // mi prendo i dati della testata ...
   end;
 
   // se l'utente conferma ... facciamo un paio di query di inserimento ...
@@ -134,16 +128,12 @@ begin
   end;
 
   if copyFromID = 0 then begin
-    buildNewEmptyRecipe(newID, sNewName);
+    dmRecipes.buildNewEmptyRecipe(newID, sNewName);
     exit;  // bona lè
   end;
 
   // duplica
-  buildNewEmptyRecipe(newID, sNewName);
-  with FormRecipeDetails do begin
-    setup(copyFromID, '', '');   // porto su i dettagli della copyFrom recipe
-    dmRecipes.DuplicateRecipe(dmRecipes.tblRecipeSteps, newID);   // preparo di dettagli della new recipe
-  end;
+  dmRecipes.copyRecipeFromTo(copyFromID, newID);   // preparo di dettagli della new recipe
 end;
 
 procedure TFormRecipes.btnPickupTypesClick(Sender: TObject);
@@ -161,21 +151,8 @@ begin
   FormTblTIPIRINS_07.show
 end;
 
-procedure TFormRecipes.btnSaveDataClick(Sender: TObject);
-begin
-  saveData
-end;
-
-procedure TFormRecipes.buildNewEmptyRecipe(pRecipeID: integer; pName: string);
-begin
-  if not saveData(false) then begin
-    showMessage('error BEFORE creating new empty recipe: can''t save data');
-    exit;   // si opera solo a dati salvati
-  end;
-  dmRecipes.buildNewEmptyRecipe(pRecipeID, pName);
-end;
-
 procedure TFormRecipes.dbgRecipesDblClick(Sender: TObject); begin goDetails end;
+
 procedure TFormRecipes.dbgRecipesTitleClick(Column: TColumn);
 begin
   dmRecipes.tblRecipes.IndexFieldNames := Column.FieldName
@@ -218,7 +195,7 @@ end;
 
 procedure TFormRecipes.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  saveData(true);
+  saveData;
   saveFormDims(self);
   puntoIni.writeInteger('config', 'lang_num', siLangDispatcher1.ActiveLanguage);
 end;
@@ -232,18 +209,10 @@ begin
   end;
 end;
 
-function TFormRecipes.saveData(pAsk: boolean): boolean;
+procedure TFormRecipes.saveData;
 begin
-  with dmRecipes.tblRecipes do begin
-    checkBrowseMode;
-    if changeCount > 0 then begin
-      if pAsk and (messageDlg(siLang1.GetTextOrDefault('IDS_10' (* 'save data ?' *) ), mtConfirmation, [mbOK, mbCancel], 0) <> mrOK) then begin
-        result := false;   exit
-      end;
-      applyUpdates(0);
-    end;
-  end;
-  result := true;
+  dmRecipes.tblRecipes.checkBrowseMode;
+  dmRecipes.tblRecipeSteps.checkBrowseMode;
 end;
 
 end.

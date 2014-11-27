@@ -36,7 +36,6 @@ type
     DBNavigator2: TDBNavigator;
     btnPositions: TButton;
     btnRenum: TButton;
-    btnDuplicate: TButton;
     btnDropTypes: TButton;
     btnPickupTypes: TButton;
     btnRinsingTypes: TButton;
@@ -58,7 +57,6 @@ type
     procedure Label3DblClick(Sender: TObject);
     procedure Label4DblClick(Sender: TObject);
     procedure btnRenumClick(Sender: TObject);
-    procedure btnDuplicateClick(Sender: TObject);
     procedure btnDropTypesClick(Sender: TObject);
     procedure btnPickupTypesClick(Sender: TObject);
     procedure btnRinsingTypesClick(Sender: TObject);
@@ -99,9 +97,6 @@ begin
   FormTblTIPIDROP_07.show
 end;
 
-procedure TFormRecipeDetails.btnDuplicateClick(Sender: TObject);
-begin dmRecipes.DuplicateRecord(dmRecipes.tblRecipeSteps) end;
-
 procedure TFormRecipeDetails.btnPickupTypesClick(Sender: TObject);
 begin
   FormTblTIPIPICK_07.Show
@@ -115,7 +110,8 @@ end;
 procedure TFormRecipeDetails.btnRenumClick(Sender: TObject);
 var i: integer;
 begin   i := 0;
-  with dmRecipes.tblRecipeSteps do begin
+  with dmRecipes.tblRecipeSteps do try
+    disableControls;
     first;
     if EOF then exit;
     while not EOF do Begin
@@ -129,6 +125,8 @@ begin   i := 0;
         edit; fieldByName('ID').AsInteger := i; dec(i, 10); post;
       end else showMessage('can''t locate for ' + intToStr(i));
     End;
+  finally
+    enableControls
   end;
   saveData;
 end;

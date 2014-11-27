@@ -4,7 +4,7 @@
         <MainSource>recipes2i18.dpr</MainSource>
         <ProjectVersion>16.1</ProjectVersion>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <AppType>Application</AppType>
         <FrameworkType>VCL</FrameworkType>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
@@ -134,8 +134,12 @@
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
-        <DCCReference Include="guiTblGalvanica.pas">
-            <Form>FormTblGalvanica</Form>
+        <DCCReference Include="guiGalvRecipes.pas">
+            <Form>FormGalvRecipes</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="guiSetpointCTRL.pas">
+            <Form>FormSetpointCTRL</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Release">
