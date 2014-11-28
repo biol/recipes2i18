@@ -142,6 +142,10 @@
             <Form>FormSetpointCTRL</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="guiTblCLBRs.pas">
+            <Form>FormTblCLBR</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

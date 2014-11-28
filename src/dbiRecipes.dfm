@@ -320,4 +320,39 @@ object dmRecipes: TdmRecipes
         ParamType = ptInput
       end>
   end
+  object tblCLBR: TFDTable
+    Active = True
+    BeforeInsert = tblCLBRBeforeInsert
+    BeforeDelete = tblCLBRBeforeDelete
+    IndexName = 'CLBR_PRIMARY'
+    Connection = recipesCnx
+    UpdateOptions.UpdateTableName = 'CLBR'
+    TableName = 'CLBR'
+    Left = 608
+    Top = 168
+    object tblCLBRIDCLBR: TIntegerField
+      FieldName = 'IDCLBR'
+      Origin = 'IDCLBR'
+      Required = True
+    end
+    object tblCLBRDSCR: TWideStringField
+      FieldName = 'DSCR'
+      Origin = 'DSCR'
+      Size = 100
+    end
+    object tblCLBRRO: TSingleField
+      FieldName = 'RO'
+      Origin = 'RO'
+      DisplayFormat = '0.00'
+    end
+    object tblCLBRKAPPA: TSingleField
+      FieldName = 'KAPPA'
+      Origin = 'KAPPA'
+      DisplayFormat = '0.00'
+    end
+    object tblCLBROFFSET_STIMA_MICRON: TIntegerField
+      FieldName = 'OFFSET_STIMA_MICRON'
+      Origin = 'OFFSET_STIMA_MICRON'
+    end
+  end
 end

@@ -12,7 +12,8 @@ uses
   CheckPreviousXE in '..\..\..\commonXE\CheckPreviousXE.pas',
   dbiRecipes in 'dbiRecipes.pas' {dmRecipes: TDataModule},
   guiGalvRecipes in 'guiGalvRecipes.pas' {FormGalvRecipes},
-  guiSetpointCTRL in 'guiSetpointCTRL.pas' {FormSetpointCTRL};
+  guiSetpointCTRL in 'guiSetpointCTRL.pas' {FormSetpointCTRL},
+  guiTblCLBRs in 'guiTblCLBRs.pas' {FormTblCLBR};
 
 {$R *.res}
 
@@ -28,5 +29,6 @@ begin if not CheckPreviousXE.RestoreIfRunning(Application.Handle) then begin
   Application.CreateForm(TFormTblTIPIRINS_07, FormTblTIPIRINS_07);
   Application.CreateForm(TFormGalvRecipes, FormGalvRecipes);
   Application.CreateForm(TFormSetpointCTRL, FormSetpointCTRL);
+  Application.CreateForm(TFormTblCLBR, FormTblCLBR);
   Application.Run;
 end end.

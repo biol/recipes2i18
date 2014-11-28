@@ -89,6 +89,9 @@ object FormGalvRecipes: TFormGalvRecipes
     Height = 41
     Align = alBottom
     TabOrder = 1
+    DesignSize = (
+      784
+      41)
     object lblRel: TLabel
       Left = 750
       Top = 12
@@ -99,11 +102,21 @@ object FormGalvRecipes: TFormGalvRecipes
     end
     object DBNavigator2: TDBNavigator
       Left = 16
-      Top = 6
+      Top = 7
       Width = 240
       Height = 25
       DataSource = dsEleRecipeSteps
       TabOrder = 0
+    end
+    object btnCalibrations: TButton
+      Left = 402
+      Top = 7
+      Width = 112
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = 'Calibrations'
+      TabOrder = 1
+      OnClick = btnCalibrationsClick
     end
   end
   object DBGrid1: TDBGrid

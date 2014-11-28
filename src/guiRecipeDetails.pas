@@ -13,7 +13,6 @@ type
     pnlFoot: TPanel;
     DBNavigator1: TDBNavigator;
     dsRecipeDetails: TDataSource;
-    btnSaveData: TButton;
     dsPositions: TDataSource;
     dblcbPosizioneName: TDBLookupComboBox;
     dblcbPosizioneDscr: TDBLookupComboBox;
@@ -34,7 +33,6 @@ type
     dbcbPRIORITA: TDBComboBox;
     Label7: TLabel;
     DBNavigator2: TDBNavigator;
-    btnPositions: TButton;
     btnRenum: TButton;
     btnDropTypes: TButton;
     btnPickupTypes: TButton;
@@ -48,8 +46,14 @@ type
     lblGalvanica: TLabel;
     dblcbGalvanica: TDBLookupComboBox;
     dbgDetails: TDBGrid;
+    btnPositions: TButton;
+    lblNewRecipe: TLabel;
+    editNewRecipeID: TEdit;
+    lblCopyFromID: TLabel;
+    EditCopyFromID: TEdit;
+    btnNewRecipe: TButton;
+    btnGalvanica: TButton;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure btnSaveDataClick(Sender: TObject);
     procedure cdsRecipeDetailsNewRecord(DataSet: TDataSet);
     procedure btnPositionsClick(Sender: TObject);
     procedure Label1DblClick(Sender: TObject);
@@ -61,10 +65,12 @@ type
     procedure btnPickupTypesClick(Sender: TObject);
     procedure btnRinsingTypesClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure btnNewRecipeClick(Sender: TObject);
+    procedure btnGalvanicaClick(Sender: TObject);
   private
     _RecipeID, _lastStep: integer;
     _prelDepoRins: boolean;
-    procedure saveData(pAsk: boolean = false);
+    procedure saveData;
   public
 
     details_ELERECIPEID
@@ -81,20 +87,64 @@ var
   FormRecipeDetails: TFormRecipeDetails;
 
 implementation uses guiRecipes, guiTblPositions, guiTblTIPIDROP_07,
-  guiTblTIPIPICK_07, guiTblTIPIRINS_07, uEtcXE, dbiRecipes;
+  guiTblTIPIPICK_07, guiTblTIPIRINS_07, uEtcXE, dbiRecipes, guiGalvRecipes;
 
 {$R *.dfm}
 
 { TFormRecipeDetails }
 
 procedure TFormRecipeDetails.setup(pRecipeID: integer; pRecipeName, pRecipeDSCR: string);
-begin
+begin   _RecipeID := pRecipeID;
   caption := format('R e c i p e   D e t a i l s :   %d) %s - %s', [pRecipeID, pRecipeName, pRecipeDSCR]);
 end;
 
 procedure TFormRecipeDetails.btnDropTypesClick(Sender: TObject);
 begin
   FormTblTIPIDROP_07.show
+end;
+
+procedure TFormRecipeDetails.btnGalvanicaClick(Sender: TObject);
+begin
+  FormGalvRecipes.showModal
+end;
+
+procedure TFormRecipeDetails.btnNewRecipeClick(Sender: TObject);
+var newID, copyFromID: integer;   sNewName: string;  tblName: string;
+begin
+  saveData;
+  newID := strToIntDef(editNewRecipeID.Text, 0);   editNewRecipeID.Text := intToStr(newID);
+  // verifica NON esistenza di newID e che sia > 0
+  if newID <= 0 then begin
+    showMessage('you can only use positive integers for NEW type ID');   exit
+  end;
+  if dmRecipes.stepExists(_RecipeID, newID) then begin
+    showMessage(format('NEW step %d already exists.', [newID]));   exit
+  end;
+
+  copyFromID := strToIntDef(EditCopyFromID .Text, 0);   EditCopyFromID .Text := intToStr(copyFromID);
+  // verifica esistenza di copyFromID se e solo se è > 0
+  if (copyFromID > 0) and (not dmRecipes.stepExists(_RecipeID, copyFromID)) then begin
+    showMessage(format('"copy from" type %d does not exist.', [copyFromID]));   exit
+  end;
+
+  // se l'utente conferma ... facciamo un paio di query di inserimento ...
+  if (copyFromID > 0) then begin
+    if messageDlg(format('Confirm copying existing type %d to NEW type %d ?',
+      [copyFromID, newID]), mtConfirmation, [mbOK, mbCancel], 0) <> mrOK then exit;
+      sNewName := siLangLinked1.GetTextOrDefault('IDS_6' (* 'copy of' *) ) + intToStr(copyFromID);
+  end else begin
+    if messageDlg(format('Confirm creating a new EMPTY step at %d ?',
+      [newID]), mtConfirmation, [mbOK, mbCancel], 0) <> mrOK then exit;
+      sNewName := 'new type';
+  end;
+
+  if copyFromID = 0 then begin
+    dmRecipes.buildNewEmptyStep(_RecipeID, newID, sNewName);
+    exit;  // bona lè
+  end;
+
+  // duplica
+  dmRecipes.copyStepFromTo(_RecipeID, copyFromID, newID);   // preparo di dettagli della new recipe
 end;
 
 procedure TFormRecipeDetails.btnPickupTypesClick(Sender: TObject);
@@ -136,11 +186,6 @@ begin
   FormTblTIPIRINS_07.show
 end;
 
-procedure TFormRecipeDetails.btnSaveDataClick(Sender: TObject);
-begin
-  saveData
-end;
-
 procedure TFormRecipeDetails.cdsRecipeDetailsNewRecord(DataSet: TDataSet);
 begin
   with dataSet do begin
@@ -153,7 +198,7 @@ end;
 procedure TFormRecipeDetails.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-  saveData(true);
+  saveData;
 end;
 
 procedure TFormRecipeDetails.FormCreate(Sender: TObject);
@@ -184,7 +229,7 @@ begin
   FormTblTIPIRINS_07.show
 end;
 
-procedure TFormRecipeDetails.saveData(pAsk: boolean);
+procedure TFormRecipeDetails.saveData;
 begin
   dmRecipes.tblRecipeSteps.checkBrowseMode;
 end;

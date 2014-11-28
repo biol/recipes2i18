@@ -101,21 +101,22 @@ implementation uses dbiRecipes;
 { TFormTblTIPIDROP_07 }
 
 procedure TFormTblTIPIDROP_07.btnNewRecipeClick(Sender: TObject);
-var newID, copyFromID: integer;   sNewName: string;
+var newID, copyFromID: integer;   sNewName: string;  tblName: string;
 begin
+  tblName := 'TIPIDEPO_07';
   saveData;
   newID := strToIntDef(editNewRecipeID.Text, 0);   editNewRecipeID.Text := intToStr(newID);
   // verifica NON esistenza di newID e che sia > 0
   if newID <= 0 then begin
     showMessage('you can only use positive integers for NEW type ID');   exit
   end;
-  if dmRecipes.typeExists('TIPIDEPO_07', newID) then begin
+  if dmRecipes.typeExists(tblName, newID) then begin
     showMessage(format('NEW type %d already exists.', [newID]));   exit
   end;
 
   copyFromID := strToIntDef(EditCopyFromID .Text, 0);   EditCopyFromID .Text := intToStr(copyFromID);
   // verifica esistenza di copyFromID se e solo se è > 0
-  if (copyFromID > 0) and (not dmRecipes.typeExists('TIPIDEPO_07', copyFromID)) then begin
+  if (copyFromID > 0) and (not dmRecipes.typeExists(tblName, copyFromID)) then begin
     showMessage(format('"copy from" type %d does not exist.', [copyFromID]));   exit
   end;
 
@@ -131,12 +132,12 @@ begin
   end;
 
   if copyFromID = 0 then begin
-    dmRecipes.buildNewEmptyType('TIPIDEPO_07', newID, sNewName);
+    dmRecipes.buildNewEmptyType(tblName, newID, sNewName);
     exit;  // bona lè
   end;
 
   // duplica
-  dmRecipes.copyTypeFromTo('TIPIDEPO_07', copyFromID, newID);   // preparo di dettagli della new recipe
+  dmRecipes.copyTypeFromTo(tblName, copyFromID, newID);   // preparo di dettagli della new recipe
 end;
 
 procedure TFormTblTIPIDROP_07.FormClose(Sender: TObject; var Action: TCloseAction);

@@ -25,11 +25,13 @@ type
     lblCopyFromID: TLabel;
     EditCopyFromID: TEdit;
     btnNewRecipe: TButton;
+    btnCalibrations: TButton;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure DBGrid2DblClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnNewRecipeClick(Sender: TObject);
     procedure DBGrid1DblClick(Sender: TObject);
+    procedure btnCalibrationsClick(Sender: TObject);
   private
     procedure saveData;
     procedure doNewGalvRecipe;
@@ -41,7 +43,7 @@ type
 var
   FormGalvRecipes: TFormGalvRecipes;
 
-implementation uses dbiRecipes, guiSetpointCTRL, uEtcXE, guiRecipes;
+implementation uses dbiRecipes, guiSetpointCTRL, uEtcXE, guiRecipes, guiTblCLBRs;
 
 {$R *.dfm}
 
@@ -50,6 +52,11 @@ implementation uses dbiRecipes, guiSetpointCTRL, uEtcXE, guiRecipes;
 procedure TFormGalvRecipes.btnNewRecipeClick(Sender: TObject);
 begin
   doNewGalvRecipe
+end;
+
+procedure TFormGalvRecipes.btnCalibrationsClick(Sender: TObject);
+begin
+  formTblCLBR.show
 end;
 
 procedure TFormGalvRecipes.DBGrid1DblClick(Sender: TObject);

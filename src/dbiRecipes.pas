@@ -60,6 +60,12 @@ type
     tblGalvRecipeStepsTANK_CHANGED: TIntegerField;
     tblGalvRecipeStepsAUXILIARY_REX: TIntegerField;
     tblGalvRecipeStepsFROM_REF_VAL: TIntegerField;
+    tblCLBR: TFDTable;
+    tblCLBRIDCLBR: TIntegerField;
+    tblCLBRDSCR: TWideStringField;
+    tblCLBRRO: TSingleField;
+    tblCLBRKAPPA: TSingleField;
+    tblCLBROFFSET_STIMA_MICRON: TIntegerField;
     procedure recipesCnxBeforeConnect(Sender: TObject);
     procedure tblRecipesBeforeDelete(DataSet: TDataSet);
     procedure tblTipiDepositoNewRecord(DataSet: TDataSet);
@@ -72,17 +78,22 @@ type
     procedure tblGalvRecipesBeforeDelete(DataSet: TDataSet);
     procedure tblGalvRecipeStepsCalcFields(DataSet: TDataSet);
     procedure DataModuleCreate(Sender: TObject);
+    procedure tblCLBRBeforeInsert(DataSet: TDataSet);
+    procedure tblCLBRBeforeDelete(DataSet: TDataSet);
   private
     _RecipeID, _lastStep: integer;
     procedure DuplicateRecords(justOne: boolean; cdsFrom, cdsTo: TFDDataSet; skipField: string; useValue: variant);
   public
     lastPickupID, lastDropID, lastRinsingID: integer;
+    function stepExists(pRecipeID, pStepID: integer): boolean;
     function typeExists(pTblName: string; pTypeID: integer): boolean;
     function recipeExists(pRecipeID: integer): boolean;
     function galvRecipeExists(pRecipeID: integer): boolean;
+    procedure copyStepFromTo(pRecipeID, copyFromStepID, copyToStepID: integer);
     procedure copyTypeFromTo(pTblName: string; copyFromTypeID, copyToTypeID: integer);
     procedure copyRecipeFromTo(copyFromRecipeID, copyToRecipeID: integer);
     procedure copyGalvRecipeFromTo(copyFromRecipeID, copyToRecipeID: integer);
+    procedure buildNewEmptyStep(pRecipeID, pStepID: integer; pName: string);
     procedure buildNewEmptyType(pTblName: string; pTypeID: integer; pName: string);
     procedure buildNewEmptyRecipe(pRecipeID: integer; pName: string);
     procedure buildNewEmptyGalvRecipe(pRecipeID: integer; pName: string);
@@ -142,6 +153,21 @@ begin
   end
 end;
 
+procedure TdmRecipes.buildNewEmptyStep(pRecipeID, pStepID: integer; pName: string);
+begin
+  with qryUtils do try
+    close;
+    SQL.Text := 'insert into DETTAGLIORICETTE (IDRICETTA, ID, DESCRIZIONE, TBAGNO) values (:IDRICETTA, :ID, :DSCR, 0)';
+    params.ParamByName('IDRICETTA').AsInteger := pRecipeID;
+    params.ParamByName('ID').AsInteger := pStepID;
+    params.ParamByName('DSCR').AsString  := copy(pName, 1, 100);
+    execSql;
+  finally
+     tblRecipeSteps.Refresh;
+     close
+  end
+end;
+
 procedure TdmRecipes.buildNewEmptyType(pTblName: string; pTypeID: integer; pName: string);
 begin
   with qryUtils do try
@@ -190,6 +216,17 @@ begin
   end;
   DuplicateRecords(false, qryUtils, tblRecipeSteps, 'IDRICETTA', copyToRecipeID);
   tblRecipes.Refresh;
+  qryUtils.Close;
+end;
+
+procedure TdmRecipes.copyStepFromTo(pRecipeID, copyFromStepID, copyToStepID: integer);
+begin
+  with qryUtils do begin
+    Close;
+    SQL.Text := Format('select * from DETTAGLIORICETTE where IDRICETTA = %d and ID = %d', [pRecipeID, copyFromStepID]);
+    open
+  end;
+  DuplicateRecords(True, qryUtils, tblRecipeSteps, 'ID', copyToStepID);
   qryUtils.Close;
 end;
 
@@ -265,6 +302,28 @@ begin with Sender as TFDConnection do begin
   params.Values['database'] := absolutizePath(puntoIni.ReadString('config', 'database',
     changeFileExt(application.ExeName, '.gdb')))
 end end;
+
+function TdmRecipes.stepExists(pRecipeID, pStepID: integer): boolean;
+begin
+  with qryUtils do try
+    close;
+    SQL.Text := Format('select * from DETTAGLIORICETTE where IDRICETTA = %d and ID = %d', [pRecipeID, pStepID]);
+    open;
+    result := (fieldByName('IDRICETTA').AsInteger = pRecipeID) and (fieldByName('ID').AsInteger = pStepID);
+  finally
+    close
+  end;
+end;
+
+procedure TdmRecipes.tblCLBRBeforeDelete(DataSet: TDataSet);
+begin
+  abort
+end;
+
+procedure TdmRecipes.tblCLBRBeforeInsert(DataSet: TDataSet);
+begin
+  abort
+end;
 
 procedure TdmRecipes.tblGalvRecipesBeforeDelete(DataSet: TDataSet);
 begin with fdqDeleteEleRecipeSteps do begin

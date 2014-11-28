@@ -590,7 +590,6 @@ object FormTblTIPIDROP_07: TFormTblTIPIDROP_07
     Height = 41
     Align = alTop
     TabOrder = 0
-    ExplicitTop = 1
     DesignSize = (
       1012
       41)
