@@ -197,7 +197,7 @@ object FormRecipeDetails: TFormRecipeDetails
     object dblcbPosizioneDscr: TDBLookupComboBox
       Left = 229
       Top = 6
-      Width = 467
+      Width = 313
       Height = 21
       DataField = 'POSIZIONE'
       DataSource = dsRecipeDetails
@@ -356,6 +356,18 @@ object FormRecipeDetails: TFormRecipeDetails
       TabOrder = 15
       OnClick = btnGalvanicaClick
     end
+    object DBCheckBox1: TDBCheckBox
+      Left = 551
+      Top = 6
+      Width = 97
+      Height = 17
+      Caption = 'FIXED POSITION (NO ALIAS)'
+      DataField = 'NO_ALIAS'
+      DataSource = dsRecipeDetails
+      TabOrder = 16
+      ValueChecked = '1'
+      ValueUnchecked = '0'
+    end
   end
   object pnlFoot: TPanel
     Left = 0
@@ -449,6 +461,13 @@ object FormRecipeDetails: TFormRecipeDetails
         Title.Alignment = taRightJustify
         Title.Caption = 'seconds'
         Width = 48
+        Visible = True
+      end
+      item
+        Alignment = taCenter
+        Expanded = False
+        FieldName = 'noAliasDscr'
+        Width = 16
         Visible = True
       end
       item

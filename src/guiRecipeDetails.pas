@@ -53,6 +53,7 @@ type
     EditCopyFromID: TEdit;
     btnNewRecipe: TButton;
     btnGalvanica: TButton;
+    DBCheckBox1: TDBCheckBox;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cdsRecipeDetailsNewRecord(DataSet: TDataSet);
     procedure btnPositionsClick(Sender: TObject);

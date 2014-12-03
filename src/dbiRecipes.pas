@@ -66,6 +66,8 @@ type
     tblCLBRRO: TSingleField;
     tblCLBRKAPPA: TSingleField;
     tblCLBROFFSET_STIMA_MICRON: TIntegerField;
+    tblRecipeStepsNO_ALIAS: TIntegerField;
+    tblRecipeStepsnoAliasDscr: TStringField;
     procedure recipesCnxBeforeConnect(Sender: TObject);
     procedure tblRecipesBeforeDelete(DataSet: TDataSet);
     procedure tblTipiDepositoNewRecord(DataSet: TDataSet);
@@ -80,6 +82,7 @@ type
     procedure DataModuleCreate(Sender: TObject);
     procedure tblCLBRBeforeInsert(DataSet: TDataSet);
     procedure tblCLBRBeforeDelete(DataSet: TDataSet);
+    procedure tblRecipeStepsCalcFields(DataSet: TDataSet);
   private
     _RecipeID, _lastStep: integer;
     procedure DuplicateRecords(justOne: boolean; cdsFrom, cdsTo: TFDDataSet; skipField: string; useValue: variant);
@@ -379,6 +382,13 @@ begin iR := DataSet.FieldByName('IDRICETTA').AsInteger;
     dmRecipes.doDeleteRecipeDetails(iR);
   end else abort
 end;
+
+procedure TdmRecipes.tblRecipeStepsCalcFields(DataSet: TDataSet);
+begin with DataSet do begin
+  if fieldByName('NO_ALIAS').AsInteger = 1 then begin
+    fieldByName('noALiasDscr').AsString := '!';
+  end else fieldByName('noALiasDscr').AsString := ' ';
+end end;
 
 procedure TdmRecipes.tblRecipeStepsNewRecord(DataSet: TDataSet);
 var tblClone: TFDTable;

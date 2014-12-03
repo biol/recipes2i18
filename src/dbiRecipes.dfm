@@ -180,6 +180,7 @@ object dmRecipes: TdmRecipes
   end
   object tblRecipeSteps: TFDTable
     Active = True
+    OnCalcFields = tblRecipeStepsCalcFields
     IndexName = 'DETTAGLIORICETTE_PRIMARY'
     MasterSource = dsRecipesLink
     MasterFields = 'IDRICETTA'
@@ -287,6 +288,16 @@ object dmRecipes: TdmRecipes
       KeyFields = 'GALVANICID'
       Size = 100
       Lookup = True
+    end
+    object tblRecipeStepsNO_ALIAS: TIntegerField
+      FieldName = 'NO_ALIAS'
+      Origin = 'NO_ALIAS'
+    end
+    object tblRecipeStepsnoAliasDscr: TStringField
+      FieldKind = fkCalculated
+      FieldName = 'noAliasDscr'
+      Size = 1
+      Calculated = True
     end
   end
   object fdqEleRecipeStepsTotalSecs: TFDQuery
