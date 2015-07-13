@@ -48,6 +48,8 @@ type
     editNewRecipeID: TEdit;
     EditCopyFromID: TEdit;
     btnNewRecipe: TButton;
+    btnSearchBarJobs: TButton;
+    lblTurkish: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -61,6 +63,7 @@ type
     procedure dbgRecipesTitleClick(Column: TColumn);
     procedure btnGoDetailsClick(Sender: TObject);
     procedure btnGalvanicaClick(Sender: TObject);
+    procedure btnSearchBarJobsClick(Sender: TObject);
   private
     _booting, _prelDepoRins: boolean;
     procedure doNewRecipe;
@@ -73,7 +76,7 @@ var
   FormRecipes: TFormRecipes;
 
 implementation uses guiRecipeDetails, uEtcXE, guiTblTIPIDROP_07, guiTblTIPIPICK_07,
-  guiTblTIPIRINS_07, dbiRecipes, guiTblGalvanica, guiGalvRecipes;
+  guiTblTIPIRINS_07, dbiRecipes, guiTblGalvanica, guiGalvRecipes, guiLastJobsOfBar;
 
 {$R *.dfm}
 
@@ -151,6 +154,11 @@ begin
   FormTblTIPIRINS_07.show
 end;
 
+procedure TFormRecipes.btnSearchBarJobsClick(Sender: TObject);
+begin
+  FormLastJobsOfBar.show
+end;
+
 procedure TFormRecipes.dbgRecipesDblClick(Sender: TObject); begin goDetails end;
 
 procedure TFormRecipes.dbgRecipesTitleClick(Column: TColumn);
@@ -176,6 +184,8 @@ end end;
 procedure TFormRecipes.FormActivate(Sender: TObject);
 begin   if not _booting then exit;                   // eliminare integrando in aooBootXE
   _booting := false;
+  dmRecipes.openRecipesAndFriends;
+
   lblRel.caption := 'Rel.' + sGetBuildInfo;
   lblGdb.caption := 'Gdb.' + dmRecipes.recipesCnx.Params.Values['database'];
   loadFormDimsNoLang(self);

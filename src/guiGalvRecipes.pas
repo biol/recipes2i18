@@ -86,13 +86,13 @@ begin  saveData;
   if newID <= 0 then begin
     showMessage(siLangLinked1.GetTextOrDefault('IDS_2' (* 'you can only use positive integers for NEW recipe ID' *) ));   exit
   end;
-  if dmRecipes.recipeExists(newID) then begin
+  if dmRecipes.GalvRecipeExists(newID) then begin
     showMessage(format(siLangLinked1.GetTextOrDefault('IDS_3' (* 'NEW recipe %d already exists.' *) ), [newID]));   exit
   end;
 
   copyFromID := strToIntDef(EditCopyFromID .Text, 0);   EditCopyFromID .Text := intToStr(copyFromID);
   // verifica esistenza di copyFromID se e solo se è > 0
-  if (copyFromID > 0) and (not dmRecipes.recipeExists(copyFromID)) then begin
+  if (copyFromID > 0) and (not dmRecipes.GalvRecipeExists(copyFromID)) then begin
     showMessage(format(siLangLinked1.GetTextOrDefault('IDS_4' (* '"copy from" recipe %d does not exist.' *) ), [copyFromID]));   exit
   end else begin   // mi prendo i dati della testata ...
   end;

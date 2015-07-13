@@ -1,0 +1,19 @@
+[Captions]
+TFormGalvRecipes.btnCalibrations=Calibrazioni~!@#$Calibrations~!@#$~!@#$~!@#$
+TFormGalvRecipes.btnNewRecipe=NUOVA ricetta~!@#$NEW recipe~!@#$~!@#$~!@#$
+TFormGalvRecipes.lblCopyFromID=copia dal ID~!@#$copy from ID~!@#$~!@#$~!@#$
+TFormGalvRecipes.lblNewRecipe=Nuovo ID ricetta~!@#$New Recipe ID~!@#$~!@#$~!@#$
+TFormGalvRecipes.lblRel=Rel.~!@#$Rel.~!@#$~!@#$~!@#$
+TFormGalvRecipes.TFormGalvRecipes=R i c e t t e   e l e t t r o c o l o r e~!@#$G a l v a n i c   R e c i p e s~!@#$~!@#$~!@#$
+
+[Language names - for internal use only!]
+Language_1=Italiano
+Language_2=English
+Language_3=Russian
+Language_4=Turkish
+
+[OPTIONS]
+CommentsFile=C:\dev\alumaster\recipes2i18\bld\GalvRecipes.xml
+DELIMITER=~!@#$
+IsUTF8File=0
+

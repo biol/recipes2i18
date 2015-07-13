@@ -68,6 +68,13 @@ type
     tblCLBROFFSET_STIMA_MICRON: TIntegerField;
     tblRecipeStepsNO_ALIAS: TIntegerField;
     tblRecipeStepsnoAliasDscr: TStringField;
+    logCnx: TFDConnection;
+    fdqLastJobsOfBar: TFDQuery;
+    fdqMaterialsOfJob: TFDQuery;
+    dsLastJobsOfBar: TDataSource;
+    fdqBarMovementsOfJob: TFDQuery;
+    dsMaterialsOfJob: TDataSource;
+    BarMovementsOfJob: TDataSource;
     procedure recipesCnxBeforeConnect(Sender: TObject);
     procedure tblRecipesBeforeDelete(DataSet: TDataSet);
     procedure tblTipiDepositoNewRecord(DataSet: TDataSet);
@@ -83,6 +90,7 @@ type
     procedure tblCLBRBeforeInsert(DataSet: TDataSet);
     procedure tblCLBRBeforeDelete(DataSet: TDataSet);
     procedure tblRecipeStepsCalcFields(DataSet: TDataSet);
+    procedure logCnxBeforeConnect(Sender: TObject);
   private
     _RecipeID, _lastStep: integer;
     procedure DuplicateRecords(justOne: boolean; cdsFrom, cdsTo: TFDDataSet; skipField: string; useValue: variant);
@@ -101,6 +109,8 @@ type
     procedure buildNewEmptyRecipe(pRecipeID: integer; pName: string);
     procedure buildNewEmptyGalvRecipe(pRecipeID: integer; pName: string);
     procedure doDeleteRecipeDetails(pRecipeID: integer);
+    procedure seekLastJobsOfBar(pBar: integer);
+    procedure openRecipesAndFriends;
   end;
 
 var
@@ -300,6 +310,25 @@ begin
   end;
 end;
 
+procedure TdmRecipes.logCnxBeforeConnect(Sender: TObject);
+begin with Sender as TFDConnection do begin
+  params.Values['database'] := absolutizePath(puntoIni.ReadString('config', 'LOG_database',
+    changeFileExt(application.ExeName, '.gdb')))
+end end;
+
+procedure TdmRecipes.openRecipesAndFriends;
+begin
+  tblPositions      .Active := true;
+  tblCLBR           .Active := true;
+  tblRecipes        .Active := true;
+  tblRecipeSteps    .Active := true;
+  tblTipiPrelievo   .Active := true;
+  tblTipiDeposito   .Active := true;
+  tblTipiRisciacquo .Active := true;
+  tblGalvRecipes    .Active := true;
+  tblGalvRecipeSteps.Active := true;
+end;
+
 procedure TdmRecipes.recipesCnxBeforeConnect(Sender: TObject);
 begin with Sender as TFDConnection do begin
   params.Values['database'] := absolutizePath(puntoIni.ReadString('config', 'database',
@@ -384,11 +413,22 @@ begin iR := DataSet.FieldByName('IDRICETTA').AsInteger;
 end;
 
 procedure TdmRecipes.tblRecipeStepsCalcFields(DataSet: TDataSet);
-begin with DataSet do begin
-  if fieldByName('NO_ALIAS').AsInteger = 1 then begin
-    fieldByName('noALiasDscr').AsString := '!';
-  end else fieldByName('noALiasDscr').AsString := ' ';
-end end;
+var sName, sDSCR, sNoAlias: string;
+begin
+  with DataSet do begin
+    if tblPositions.Locate('ID', fieldByName('POSIZIONE').AsInteger) then begin
+      sName := tblPositions.FieldByName('NAME').AsString;
+      sDSCR := tblPositions.FieldByName('DSCR').AsString;
+    end else begin
+      sName := 'ERROR';  sDSCR := sName;
+    end;
+    if fieldByName('NO_ALIAS').AsInteger = 1 then begin
+      sNoAlias := ' !';
+    end else sNoAlias := '';;
+    fieldByName('posName').AsString := sName + sNoAlias;
+    fieldByName('posDSCR').AsString := sDSCR + sNoAlias;
+  end
+end;
 
 procedure TdmRecipes.tblRecipeStepsNewRecord(DataSet: TDataSet);
 var tblClone: TFDTable;
@@ -489,6 +529,17 @@ begin
     cdsTo.post;
     cdsFrom.next;
   until justOne or cdsFrom.EOF;
+end;
+
+procedure TdmRecipes.seekLastJobsOfBar(pBar: integer);
+begin
+  with fdqLastJobsOfBar do begin
+    close;
+    params.paramValues['IDBARRA'] := pBar;
+    open;
+  end;
+  fdqMaterialsOfJob.Open;
+  fdqBarMovementsOfJob.Open;
 end;
 
 end.

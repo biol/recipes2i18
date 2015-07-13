@@ -1,0 +1,34 @@
+
+[Captions]
+TFormRecipes.btnDropTypes=Depositi~!@#$DROPs~!@#$капли~!@#$~!@#$
+TFormRecipes.btnGalvanica=Galvanica~!@#$~!@#$~!@#$~!@#$
+TFormRecipes.btnGoDetails=D e t t a g l i~!@#$D e t a i l s~!@#$детали~!@#$~!@#$
+TFormRecipes.btnNewRecipe=NUOVA ricetta~!@#$N E W   r e c i p e~!@#$Новый рецепт~!@#$~!@#$
+TFormRecipes.btnPickupTypes=Prelievi~!@#$PICKUPs~!@#$Доставка~!@#$~!@#$
+TFormRecipes.btnPositions=P o s i z i o n i~!@#$P o s i t i o n s~!@#$Позиций~!@#$~!@#$
+TFormRecipes.btnRinsingTypes=Risciacqui~!@#$RINSINGs~!@#$полосканий~!@#$~!@#$
+TFormRecipes.btnSearchBarJobs=Search Bar Jobs~!@#$~!@#$~!@#$~!@#$
+TFormRecipes.dbcbDISPONIBILE=abilitato~!@#$e n a b l e d~!@#$включен~!@#$~!@#$
+TFormRecipes.Label1=nome~!@#$name~!@#$имя~!@#$~!@#$
+TFormRecipes.Label3=descrizione~!@#$description~!@#$описание~!@#$~!@#$
+TFormRecipes.Label4=gruppo~!@#$group~!@#$группа~!@#$~!@#$
+TFormRecipes.lblCopyFromID=copia dall'ID~!@#$copy from ID~!@#$копии с ID~!@#$~!@#$
+TFormRecipes.lblENG=English~!@#$English~!@#$English~!@#$English~!@#$
+TFormRecipes.lblGdb=gdb~!@#$gdb~!@#$GDB~!@#$~!@#$
+TFormRecipes.lblITA=Italian~!@#$Italian~!@#$Italian~!@#$Italian~!@#$
+TFormRecipes.lblNewRecipe=New Recipe ID~!@#$New Recipe ID~!@#$Новая ID рецепта~!@#$~!@#$
+TFormRecipes.lblRel=Rel. 1.2.3.4~!@#$~!@#$~!@#$~!@#$
+TFormRecipes.lblSTR=???????~!@#$???????~!@#$русский~!@#$???????~!@#$
+TFormRecipes.lblTurkish=Turkish~!@#$Turkish~!@#$Turkish~!@#$Turkish~!@#$
+TFormRecipes.TFormRecipes=R i c e t t e~!@#$R e c i p e s~!@#$Р е ц е п т ы~!@#$~!@#$
+
+[Language names - for internal use only!]
+Language_1=Italiano
+Language_2=English
+Language_3=Russian
+Language_4=Turkish
+
+[OPTIONS]
+DELIMITER=~!@#$
+IsUTF8File=0
+

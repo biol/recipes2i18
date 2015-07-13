@@ -13,6 +13,7 @@ type
     DBGrid1: TDBGrid;
     siLangLinked1: TsiLangLinked;
     dsPositions: TDataSource;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -27,5 +28,10 @@ implementation
 {$R *.dfm}
 
 uses dbiRecipes;
+
+procedure TFormTblPositions.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  with dsPositions.DataSet do if active then checkBrowseMode
+end;
 
 end.

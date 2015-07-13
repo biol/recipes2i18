@@ -54,6 +54,7 @@ type
     btnNewRecipe: TButton;
     btnGalvanica: TButton;
     DBCheckBox1: TDBCheckBox;
+    DBCheckBox2: TDBCheckBox;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cdsRecipeDetailsNewRecord(DataSet: TDataSet);
     procedure btnPositionsClick(Sender: TObject);
