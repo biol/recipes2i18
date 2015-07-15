@@ -18,9 +18,6 @@ type
     tblRecipes: TFDTable;
     qryUtils: TFDQuery;
     tblPositions: TFDTable;
-    tblTipiPrelievo: TFDTable;
-    tblTipiDeposito: TFDTable;
-    tblTipiRisciacquo: TFDTable;
     tblGalvRecipes: TFDTable;
     tblGalvRecipeSteps: TFDTable;
     dsGalvRecipesLink: TDataSource;
@@ -68,21 +65,8 @@ type
     tblCLBROFFSET_STIMA_MICRON: TIntegerField;
     tblRecipeStepsNO_ALIAS: TIntegerField;
     tblRecipeStepsnoAliasDscr: TStringField;
-    logCnx: TFDConnection;
-    fdqLastJobsOfBar: TFDQuery;
-    fdqMaterialsOfJob: TFDQuery;
-    dsLastJobsOfBar: TDataSource;
-    fdqBarMovementsOfJob: TFDQuery;
-    dsMaterialsOfJob: TDataSource;
-    BarMovementsOfJob: TDataSource;
     procedure recipesCnxBeforeConnect(Sender: TObject);
     procedure tblRecipesBeforeDelete(DataSet: TDataSet);
-    procedure tblTipiDepositoNewRecord(DataSet: TDataSet);
-    procedure tblTipiDepositoAfterOpen(DataSet: TDataSet);
-    procedure tblTipiPrelievoAfterOpen(DataSet: TDataSet);
-    procedure tblTipiRisciacquoAfterOpen(DataSet: TDataSet);
-    procedure tblTipiRisciacquoNewRecord(DataSet: TDataSet);
-    procedure tblTipiPrelievoNewRecord(DataSet: TDataSet);
     procedure tblRecipeStepsNewRecord(DataSet: TDataSet);
     procedure tblGalvRecipesBeforeDelete(DataSet: TDataSet);
     procedure tblGalvRecipeStepsCalcFields(DataSet: TDataSet);
@@ -90,7 +74,6 @@ type
     procedure tblCLBRBeforeInsert(DataSet: TDataSet);
     procedure tblCLBRBeforeDelete(DataSet: TDataSet);
     procedure tblRecipeStepsCalcFields(DataSet: TDataSet);
-    procedure logCnxBeforeConnect(Sender: TObject);
   private
     _RecipeID, _lastStep: integer;
     procedure DuplicateRecords(justOne: boolean; cdsFrom, cdsTo: TFDDataSet; skipField: string; useValue: variant);
@@ -101,15 +84,12 @@ type
     function recipeExists(pRecipeID: integer): boolean;
     function galvRecipeExists(pRecipeID: integer): boolean;
     procedure copyStepFromTo(pRecipeID, copyFromStepID, copyToStepID: integer);
-    procedure copyTypeFromTo(pTblName: string; copyFromTypeID, copyToTypeID: integer);
     procedure copyRecipeFromTo(copyFromRecipeID, copyToRecipeID: integer);
     procedure copyGalvRecipeFromTo(copyFromRecipeID, copyToRecipeID: integer);
     procedure buildNewEmptyStep(pRecipeID, pStepID: integer; pName: string);
-    procedure buildNewEmptyType(pTblName: string; pTypeID: integer; pName: string);
     procedure buildNewEmptyRecipe(pRecipeID: integer; pName: string);
     procedure buildNewEmptyGalvRecipe(pRecipeID: integer; pName: string);
     procedure doDeleteRecipeDetails(pRecipeID: integer);
-    procedure seekLastJobsOfBar(pBar: integer);
     procedure openRecipesAndFriends;
   end;
 
@@ -181,21 +161,6 @@ begin
   end
 end;
 
-procedure TdmRecipes.buildNewEmptyType(pTblName: string; pTypeID: integer; pName: string);
-begin
-  with qryUtils do try
-    close;
-    SQL.Text := 'insert into ' + pTblName + ' (ID, DSCR, TIPO) values (:ID, :DSCR, 0)';
-    params.ParamByName('ID').AsInteger := pTypeID;
-    params.ParamByName('DSCR').AsString  := copy(pName, 1, 64);
-    execSql;
-  finally
-    tblTipiPrelievo.Refresh;
-    tblTipiDeposito.Refresh;
-    tblTipiRisciacquo.Refresh;
-    close
-  end
-end;
 
 procedure TdmRecipes.copyGalvRecipeFromTo(copyFromRecipeID, copyToRecipeID: integer);
 begin
@@ -243,24 +208,6 @@ begin
   qryUtils.Close;
 end;
 
-procedure TdmRecipes.copyTypeFromTo(pTblName: string; copyFromTypeID, copyToTypeID: integer);
-var ttt: TFDDataSet;
-begin
-  if CompareText('TIPIPREL_07', pTblName) = 0 then begin
-    ttt := tblTipiPrelievo;
-  end else if CompareText('TIPIDEPO_07', pTblName) = 0 then begin
-    ttt := tblTipiDeposito;
-  end else ttt := tblTipiRisciacquo;
-
-  with qryUtils do begin
-    Close;
-    SQL.Text := 'select * from ' + pTblName + ' where ID = ' + IntToStr(copyFromTypeID);
-    open
-  end;
-  DuplicateRecords(True, qryUtils, ttt, 'ID', copyToTypeID);
-  qryUtils.Close;
-  ttt.Refresh
-end;
 
 procedure TdmRecipes.DataModuleCreate(Sender: TObject);
 begin with puntoIni do begin
@@ -310,21 +257,12 @@ begin
   end;
 end;
 
-procedure TdmRecipes.logCnxBeforeConnect(Sender: TObject);
-begin with Sender as TFDConnection do begin
-  params.Values['database'] := absolutizePath(puntoIni.ReadString('config', 'LOG_database',
-    changeFileExt(application.ExeName, '.gdb')))
-end end;
-
 procedure TdmRecipes.openRecipesAndFriends;
 begin
   tblPositions      .Active := true;
   tblCLBR           .Active := true;
   tblRecipes        .Active := true;
   tblRecipeSteps    .Active := true;
-  tblTipiPrelievo   .Active := true;
-  tblTipiDeposito   .Active := true;
-  tblTipiRisciacquo .Active := true;
   tblGalvRecipes    .Active := true;
   tblGalvRecipeSteps.Active := true;
 end;
@@ -443,49 +381,6 @@ begin
   end;
 end;
 
-procedure TdmRecipes.tblTipiDepositoAfterOpen(DataSet: TDataSet);
-begin with Dataset do begin
-  last;   lastDropID := fieldByName('ID').AsInteger;
-end end;
-
-procedure TdmRecipes.tblTipiPrelievoAfterOpen(DataSet: TDataSet);
-begin with DataSet do begin
-  last;   lastPickupID := fieldByName('ID').AsInteger;
-end end;
-
-procedure TdmRecipes.tblTipiPrelievoNewRecord(DataSet: TDataSet);
-begin   inc(lastPickupID);
-  with Dataset do begin
-    FieldByName('ID').AsInteger := lastPickupID;
-    FieldByName('VEL_Q1').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q2').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q3').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q4').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q5').AsInteger := -1;   // true by default
-    FieldByName('VEL_ALLI').AsInteger := -1;   // true by default
-    FieldByName('VEL_HILO').AsInteger := -1;   // true by default
-    FieldByName('PENDENZA').AsInteger := -1;   // true by default
-  end;
-end;
-
-procedure TdmRecipes.tblTipiRisciacquoAfterOpen(DataSet: TDataSet);
-begin with DataSet do begin
-  last;   lastRinsingID := fieldByName('ID').AsInteger;
-end end;
-
-procedure TdmRecipes.tblTipiRisciacquoNewRecord(DataSet: TDataSet);
-begin   inc(lastRinsingID);
-  with Dataset do begin
-    FieldByName('ID').AsInteger := lastRinsingID;
-    FieldByName('VEL_Q1').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q2').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q3').AsInteger := -1;   // true by default
-    FieldByName('VEL_ALLI').AsInteger := -1;   // true by default
-    FieldByName('VEL_HILO').AsInteger := -1;   // true by default
-    FieldByName('PENDENZA').AsInteger := -1;   // true by default
-  end;
-end;
-
 function TdmRecipes.typeExists(pTblName: string; pTypeID: integer): boolean;
 begin
   with qryUtils do try
@@ -495,21 +390,6 @@ begin
     result := fieldByName('ID').AsInteger = pTypeID;
   finally
     close
-  end;
-end;
-
-procedure TdmRecipes.tblTipiDepositoNewRecord(DataSet: TDataSet);
-begin inc(lastDropID);
-  with Dataset do begin
-    FieldByName('ID').AsInteger := lastDropID;
-    FieldByName('VEL_Q1').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q2').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q3').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q4').AsInteger := -1;   // true by default
-    FieldByName('VEL_Q5').AsInteger := -1;   // true by default
-    FieldByName('VEL_ALLI').AsInteger := -1;   // true by default
-    FieldByName('VEL_HILO').AsInteger := -1;   // true by default
-    FieldByName('PENDENZA').AsInteger := -1;   // true by default
   end;
 end;
 
@@ -529,17 +409,6 @@ begin
     cdsTo.post;
     cdsFrom.next;
   until justOne or cdsFrom.EOF;
-end;
-
-procedure TdmRecipes.seekLastJobsOfBar(pBar: integer);
-begin
-  with fdqLastJobsOfBar do begin
-    close;
-    params.paramValues['IDBARRA'] := pBar;
-    open;
-  end;
-  fdqMaterialsOfJob.Open;
-  fdqBarMovementsOfJob.Open;
 end;
 
 end.

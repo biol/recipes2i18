@@ -99,18 +99,20 @@ object FormTblCLBR: TFormTblCLBR
       end>
   end
   object siLangLinked1: TsiLangLinked
-    Version = '7.3'
+    Version = '7.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
-    NumOfLanguages = 4
+    StoreAsUTF8 = True
+    NumOfLanguages = 5
     LangDispatcher = FormRecipes.siLangDispatcher1
     LangDelim = 1
     LangNames.Strings = (
       'Italiano'
       'English'
       'Russian'
-      'Turkish')
+      'Turkish'
+      'Belgian')
     Language = 'Italiano'
     CommonContainer = FormRecipes.siLang1
     ExcludedProperties.Strings = (
@@ -144,8 +146,8 @@ object FormTblCLBR: TFormTblCLBR
       'DataField'
       'KeyField'
       'ListField')
-    Left = 552
-    Top = 96
+    Left = 48
+    Top = 80
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A00540046006F0072006D00540062006C0043004C0042005200

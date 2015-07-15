@@ -17,7 +17,7 @@ type
     dblcbPosizioneName: TDBLookupComboBox;
     dblcbPosizioneDscr: TDBLookupComboBox;
     Label1: TLabel;
-    dsTIPIDEPO_07: TDataSource;
+    dsDropTypes: TDataSource;
     Label2: TLabel;
     dblcbDrop: TDBLookupComboBox;
     dblcbPickup: TDBLookupComboBox;
@@ -26,8 +26,8 @@ type
     Label4: TLabel;
     Label5: TLabel;
     dbeRINSINGCOUNT: TDBEdit;
-    dsTIPIPREL_07: TDataSource;
-    dsTIPIRISC_07: TDataSource;
+    dsPickupTypes: TDataSource;
+    dsRinsingTypes: TDataSource;
     Label6: TLabel;
     dbeTBAGNO: TDBEdit;
     dbcbPRIORITA: TDBComboBox;
@@ -88,8 +88,8 @@ type
 var
   FormRecipeDetails: TFormRecipeDetails;
 
-implementation uses guiRecipes, guiTblPositions, guiTblTIPIDROP_07,
-  guiTblTIPIPICK_07, guiTblTIPIRINS_07, uEtcXE, dbiRecipes, guiGalvRecipes;
+implementation uses guiRecipes, guiTblPositions, uEtcXE, dbiRecipes, guiGalvRecipes, dbiPickupDropRins, guiDropTypes,
+  guiPickupTypes, guiRinsingTypes;
 
 {$R *.dfm}
 
@@ -102,7 +102,7 @@ end;
 
 procedure TFormRecipeDetails.btnDropTypesClick(Sender: TObject);
 begin
-  FormTblTIPIDROP_07.show
+  FormDropTypes.show
 end;
 
 procedure TFormRecipeDetails.btnGalvanicaClick(Sender: TObject);
@@ -151,7 +151,7 @@ end;
 
 procedure TFormRecipeDetails.btnPickupTypesClick(Sender: TObject);
 begin
-  FormTblTIPIPICK_07.Show
+  FormPickupTypes.Show
 end;
 
 procedure TFormRecipeDetails.btnPositionsClick(Sender: TObject);
@@ -185,7 +185,7 @@ end;
 
 procedure TFormRecipeDetails.btnRinsingTypesClick(Sender: TObject);
 begin
-  FormTblTIPIRINS_07.show
+  FormRinsingTypes.show
 end;
 
 procedure TFormRecipeDetails.cdsRecipeDetailsNewRecord(DataSet: TDataSet);
@@ -218,17 +218,17 @@ end;
 
 procedure TFormRecipeDetails.Label2DblClick(Sender: TObject);
 begin
-  FormTblTIPIDROP_07.show
+//  FormTblTIPIDROP_07.show
 end;
 
 procedure TFormRecipeDetails.Label3DblClick(Sender: TObject);
 begin
-  FormTblTIPIPICK_07.Show
+//  FormTblTIPIPICK_07.Show
 end;
 
 procedure TFormRecipeDetails.Label4DblClick(Sender: TObject);
 begin
-  FormTblTIPIRINS_07.show
+//  FormTblTIPIRINS_07.show
 end;
 
 procedure TFormRecipeDetails.saveData;

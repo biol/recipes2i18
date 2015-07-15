@@ -48,7 +48,6 @@ type
     editNewRecipeID: TEdit;
     EditCopyFromID: TEdit;
     btnNewRecipe: TButton;
-    btnSearchBarJobs: TButton;
     lblTurkish: TLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -63,7 +62,6 @@ type
     procedure dbgRecipesTitleClick(Column: TColumn);
     procedure btnGoDetailsClick(Sender: TObject);
     procedure btnGalvanicaClick(Sender: TObject);
-    procedure btnSearchBarJobsClick(Sender: TObject);
   private
     _booting, _prelDepoRins: boolean;
     procedure doNewRecipe;
@@ -75,14 +73,14 @@ type
 var
   FormRecipes: TFormRecipes;
 
-implementation uses guiRecipeDetails, uEtcXE, guiTblTIPIDROP_07, guiTblTIPIPICK_07,
-  guiTblTIPIRINS_07, dbiRecipes, guiTblGalvanica, guiGalvRecipes, guiLastJobsOfBar;
+implementation uses guiRecipeDetails, uEtcXE, dbiRecipes, guiTblGalvanica, guiGalvRecipes, guiDropTypes, guiPickupTypes,
+  guiRinsingTypes, dbiPickupDropRins;
 
 {$R *.dfm}
 
 procedure TFormRecipes.btnDropTypesClick(Sender: TObject);
 begin
-  FormTblTIPIDROP_07.show
+  FormDropTypes.show
 end;
 
 procedure TFormRecipes.btnGalvanicaClick(Sender: TObject);
@@ -141,7 +139,7 @@ end;
 
 procedure TFormRecipes.btnPickupTypesClick(Sender: TObject);
 begin
-  FormTblTIPIPICK_07.Show
+  FormPickupTypes.Show
 end;
 
 procedure TFormRecipes.btnPositionsClick(Sender: TObject);
@@ -151,12 +149,7 @@ end;
 
 procedure TFormRecipes.btnRinsingTypesClick(Sender: TObject);
 begin
-  FormTblTIPIRINS_07.show
-end;
-
-procedure TFormRecipes.btnSearchBarJobsClick(Sender: TObject);
-begin
-  FormLastJobsOfBar.show
+  FormRinsingTypes.show
 end;
 
 procedure TFormRecipes.dbgRecipesDblClick(Sender: TObject); begin goDetails end;
@@ -185,7 +178,7 @@ procedure TFormRecipes.FormActivate(Sender: TObject);
 begin   if not _booting then exit;                   // eliminare integrando in aooBootXE
   _booting := false;
   dmRecipes.openRecipesAndFriends;
-
+  dmPickupDropRins.openTypes;
   lblRel.caption := 'Rel.' + sGetBuildInfo;
   lblGdb.caption := 'Gdb.' + dmRecipes.recipesCnx.Params.Values['database'];
   loadFormDimsNoLang(self);

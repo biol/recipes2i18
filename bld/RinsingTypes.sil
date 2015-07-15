@@ -1,0 +1,55 @@
+﻿
+[Captions]
+TFormRinsingTypes.btnDupl=Duplicate ID ###~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.lblMaximumInclination=lblMaximumInclination~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.lblMaximumInclinationDscr=maximum inclination~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.lblNewID=New ID:~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.lblRinsingDownLevel=lblRinsingDownLevel~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.lblTopLevel=lblTopLevel~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.lblTopLevelDscr=top level~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.lblTOTAL_SECS=total seconds~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.TFormRinsingTypes=R i n s i n g   t y p e s~!@#$~!@#$~!@#$~!@#$~!@#$
+
+[CharSets]
+TFormRinsingTypes.DBEditDscr=DEFAULT_CHARSET~!@#$DEFAULT_CHARSET~!@#$RUSSIAN_CHARSET~!@#$DEFAULT_CHARSET~!@#$DEFAULT_CHARSET~!@#$
+TFormRinsingTypes.TFormRinsingTypes=DEFAULT_CHARSET~!@#$DEFAULT_CHARSET~!@#$RUSSIAN_CHARSET~!@#$DEFAULT_CHARSET~!@#$DEFAULT_CHARSET~!@#$
+
+[Collections]
+TFormRinsingTypes.DBGrid1.Columns-0+.Title.Caption=ID~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.DBGrid1.Columns-1+.Title.Caption=Description~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.DBGrid1.Columns-2+.Title.Caption=Total seconds~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.DBGrid1.Columns-3+.Title.Caption=Pause 0~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.DBGrid1.Columns-4+.Title.Caption=Pause 1~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.DBGrid1.Columns-5+.Title.Caption=Pause 2~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.DBGrid1.Columns-6+.Title.Caption=Pause 3~!@#$~!@#$~!@#$~!@#$~!@#$
+
+[Fonts]
+TFormRinsingTypes.DBEditDscr=Tahoma~!@#$Tahoma~!@#$Tahoma~!@#$~!@#$~!@#$
+TFormRinsingTypes.TFormRinsingTypes=Tahoma~!@#$Tahoma~!@#$Tahoma~!@#$~!@#$~!@#$
+
+[Language names - for internal use only!]
+Language_1=Italiano
+Language_2=English
+Language_3=Russian
+Language_4=Turkish
+Language_5=Belgian
+
+[Multilines]
+TFormRinsingTypes.DBNavigator1.Hints="First record","Prior record","Next record","Last record","Insert record","Delete record","Edit record","Post edit","Cancel edit","Refresh data","Apply updates","Cancel updates"~!@#$~!@#$~!@#$~!@#$~!@#$
+
+[OPTIONS]
+Delimiter=~!@#$
+IsUTF8File=1
+
+[Other]
+TFormRinsingTypes.dbcbFast1.ValueChecked=1~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.dbcbFast1.ValueUnchecked=0~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.dbcbFast2.ValueChecked=1~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.dbcbFast2.ValueUnchecked=0~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.dbcbFast3.ValueChecked=1~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.dbcbFast3.ValueUnchecked=0~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.dbcbFast4.ValueChecked=1~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.dbcbFast4.ValueUnchecked=0~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.DBCheckBox1.ValueChecked=1~!@#$~!@#$~!@#$~!@#$~!@#$
+TFormRinsingTypes.DBCheckBox1.ValueUnchecked=0~!@#$~!@#$~!@#$~!@#$~!@#$
+

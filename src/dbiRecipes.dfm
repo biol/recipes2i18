@@ -9,8 +9,8 @@ object dmRecipes: TdmRecipes
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
     Provider = 'Forms'
-    Left = 226
-    Top = 48
+    Left = 634
+    Top = 16
   end
   object FDGUIxErrorDialog1: TFDGUIxErrorDialog
     Provider = 'Forms'
@@ -19,12 +19,11 @@ object dmRecipes: TdmRecipes
   end
   object recipesCnx: TFDConnection
     Params.Strings = (
-      'Database=C:\temp\montiEng_databases_backups\RECIPES.GDB'
+      'Database=C:\gdb\PROTEC_RECIPES.GDB'
       'User_Name=SYSDBA'
       'Password=masterkey'
-      'DriverID=FB'
-      'CharacterSet=utf8')
-    Connected = True
+      'CharacterSet=utf8'
+      'DriverID=FB')
     LoginPrompt = False
     BeforeConnect = recipesCnxBeforeConnect
     Left = 32
@@ -49,38 +48,8 @@ object dmRecipes: TdmRecipes
     Connection = recipesCnx
     UpdateOptions.UpdateTableName = 'POSITIONS'
     TableName = 'POSITIONS'
-    Left = 256
-    Top = 320
-  end
-  object tblTipiPrelievo: TFDTable
-    AfterOpen = tblTipiPrelievoAfterOpen
-    OnNewRecord = tblTipiPrelievoNewRecord
-    IndexFieldNames = 'ID'
-    Connection = recipesCnx
-    UpdateOptions.UpdateTableName = 'TIPIPREL_07'
-    TableName = 'TIPIPREL_07'
-    Left = 72
-    Top = 272
-  end
-  object tblTipiDeposito: TFDTable
-    AfterOpen = tblTipiDepositoAfterOpen
-    OnNewRecord = tblTipiDepositoNewRecord
-    IndexFieldNames = 'ID'
-    Connection = recipesCnx
-    UpdateOptions.UpdateTableName = 'TIPIDEPO_07'
-    TableName = 'TIPIDEPO_07'
-    Left = 128
-    Top = 312
-  end
-  object tblTipiRisciacquo: TFDTable
-    AfterOpen = tblTipiRisciacquoAfterOpen
-    OnNewRecord = tblTipiRisciacquoNewRecord
-    IndexFieldNames = 'ID'
-    Connection = recipesCnx
-    UpdateOptions.UpdateTableName = 'TIPIRISC_07'
-    TableName = 'TIPIRISC_07'
-    Left = 192
-    Top = 272
+    Left = 296
+    Top = 104
   end
   object tblGalvRecipes: TFDTable
     BeforeDelete = tblGalvRecipesBeforeDelete
@@ -89,7 +58,7 @@ object dmRecipes: TdmRecipes
     UpdateOptions.UpdateTableName = 'INDICEELETTROCOLRE'
     TableName = 'INDICEELETTROCOLRE'
     Left = 480
-    Top = 32
+    Top = 112
   end
   object tblGalvRecipeSteps: TFDTable
     OnCalcFields = tblGalvRecipeStepsCalcFields
@@ -100,7 +69,7 @@ object dmRecipes: TdmRecipes
     UpdateOptions.UpdateTableName = 'DETTELOXI'
     TableName = 'DETTELOXI'
     Left = 608
-    Top = 96
+    Top = 176
     object tblGalvRecipeStepsIDELETTROCOLORE: TIntegerField
       FieldName = 'IDELETTROCOLORE'
       Origin = 'IDELETTROCOLORE'
@@ -164,7 +133,7 @@ object dmRecipes: TdmRecipes
   object dsGalvRecipesLink: TDataSource
     DataSet = tblGalvRecipes
     Left = 536
-    Top = 64
+    Top = 144
   end
   object dsRecipesLink: TDataSource
     DataSet = tblRecipes
@@ -303,7 +272,7 @@ object dmRecipes: TdmRecipes
       'from DETTELOXI'
       'where DETTELOXI.IDELETTROCOLORE = :IDELETTROCOLORE')
     Left = 400
-    Top = 112
+    Top = 192
     ParamData = <
       item
         Name = 'IDELETTROCOLORE'
@@ -316,7 +285,7 @@ object dmRecipes: TdmRecipes
       'delete from DETTELOXI'
       'where IDELETTROCOLORE = :IDELETTROCOLORE')
     Left = 400
-    Top = 176
+    Top = 256
     ParamData = <
       item
         Name = 'IDELETTROCOLORE'
@@ -331,7 +300,7 @@ object dmRecipes: TdmRecipes
     UpdateOptions.UpdateTableName = 'CLBR'
     TableName = 'CLBR'
     Left = 608
-    Top = 168
+    Top = 248
     object tblCLBRIDCLBR: TIntegerField
       FieldName = 'IDCLBR'
       Origin = 'IDCLBR'
@@ -356,82 +325,5 @@ object dmRecipes: TdmRecipes
       FieldName = 'OFFSET_STIMA_MICRON'
       Origin = 'OFFSET_STIMA_MICRON'
     end
-  end
-  object logCnx: TFDConnection
-    Params.Strings = (
-      'Database=C:\temp\montiEng_databases_backups\LOG.GDB'
-      'User_Name=SYSDBA'
-      'Password=masterkey'
-      'DriverID=FB'
-      'CharacterSet=utf8')
-    Connected = True
-    LoginPrompt = False
-    BeforeConnect = logCnxBeforeConnect
-    Left = 528
-    Top = 232
-  end
-  object fdqLastJobsOfBar: TFDQuery
-    Connection = logCnx
-    SQL.Strings = (
-      'select first 5 * from LOGJOB1'
-      'where IDBARRA = :IDBARRA'
-      'order by ORARIOLOG desc')
-    Left = 488
-    Top = 280
-    ParamData = <
-      item
-        Name = 'IDBARRA'
-        DataType = ftString
-        ParamType = ptInput
-        Value = '25'
-      end>
-  end
-  object fdqMaterialsOfJob: TFDQuery
-    MasterSource = dsLastJobsOfBar
-    MasterFields = 'IDJOB'
-    Connection = recipesCnx
-    SQL.Strings = (
-      'select * from JOB_MATERIALS where JOB_ID = :IDJOB')
-    Left = 408
-    Top = 384
-    ParamData = <
-      item
-        Name = 'IDJOB'
-        DataType = ftString
-        ParamType = ptInput
-        Value = '200'
-      end>
-  end
-  object dsLastJobsOfBar: TDataSource
-    DataSet = fdqLastJobsOfBar
-    Left = 552
-    Top = 304
-  end
-  object fdqBarMovementsOfJob: TFDQuery
-    MasterSource = dsLastJobsOfBar
-    MasterFields = 'IDJOB'
-    Connection = logCnx
-    SQL.Strings = (
-      'select * from LOGBARRE1 where IDJOB = :IDJOB'
-      'order by ID')
-    Left = 544
-    Top = 384
-    ParamData = <
-      item
-        Name = 'IDJOB'
-        DataType = ftString
-        ParamType = ptInput
-        Value = '200'
-      end>
-  end
-  object dsMaterialsOfJob: TDataSource
-    DataSet = fdqMaterialsOfJob
-    Left = 408
-    Top = 432
-  end
-  object BarMovementsOfJob: TDataSource
-    DataSet = fdqBarMovementsOfJob
-    Left = 544
-    Top = 432
   end
 end

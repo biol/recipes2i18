@@ -215,7 +215,7 @@ object FormRecipeDetails: TFormRecipeDetails
       DataSource = dsRecipeDetails
       KeyField = 'ID'
       ListField = 'DSCR'
-      ListSource = dsTIPIDEPO_07
+      ListSource = dsDropTypes
       TabOrder = 2
     end
     object dblcbPickup: TDBLookupComboBox
@@ -227,7 +227,7 @@ object FormRecipeDetails: TFormRecipeDetails
       DataSource = dsRecipeDetails
       KeyField = 'ID'
       ListField = 'DSCR'
-      ListSource = dsTIPIPREL_07
+      ListSource = dsPickupTypes
       TabOrder = 3
     end
     object dblcbRinsing: TDBLookupComboBox
@@ -239,7 +239,7 @@ object FormRecipeDetails: TFormRecipeDetails
       DataSource = dsRecipeDetails
       KeyField = 'ID'
       ListField = 'DSCR'
-      ListSource = dsTIPIRISC_07
+      ListSource = dsRinsingTypes
       TabOrder = 4
     end
     object dbeRINSINGCOUNT: TDBEdit
@@ -595,34 +595,36 @@ object FormRecipeDetails: TFormRecipeDetails
     Left = 539
     Top = 111
   end
-  object dsTIPIDEPO_07: TDataSource
-    DataSet = dmRecipes.tblTipiDeposito
+  object dsDropTypes: TDataSource
+    DataSet = dmPickupDropRins.fdtDropTypes
     Left = 392
     Top = 122
   end
-  object dsTIPIPREL_07: TDataSource
-    DataSet = dmRecipes.tblTipiPrelievo
+  object dsPickupTypes: TDataSource
+    DataSet = dmPickupDropRins.fdtPickupTypes
     Left = 392
     Top = 178
   end
-  object dsTIPIRISC_07: TDataSource
-    DataSet = dmRecipes.tblTipiRisciacquo
+  object dsRinsingTypes: TDataSource
+    DataSet = dmPickupDropRins.fdtRinsingTypes
     Left = 392
     Top = 242
   end
   object siLangLinked1: TsiLangLinked
-    Version = '7.3'
+    Version = '7.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
-    NumOfLanguages = 4
+    StoreAsUTF8 = True
+    NumOfLanguages = 5
     LangDispatcher = FormRecipes.siLangDispatcher1
     LangDelim = 1
     LangNames.Strings = (
       'Italiano'
       'English'
       'Russian'
-      'Turkish')
+      'Turkish'
+      'Belgian')
     Language = 'Italiano'
     CommonContainer = FormRecipes.siLang1
     ExcludedProperties.Strings = (

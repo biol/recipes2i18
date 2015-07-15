@@ -303,18 +303,20 @@ object FormSetpointCTRL: TFormSetpointCTRL
     Top = 97
   end
   object siLangLinked1: TsiLangLinked
-    Version = '7.3'
+    Version = '7.4'
     StringsTypes.Strings = (
       'TIB_STRINGLIST'
       'TSTRINGLIST')
-    NumOfLanguages = 4
+    StoreAsUTF8 = True
+    NumOfLanguages = 5
     LangDispatcher = FormRecipes.siLangDispatcher1
     LangDelim = 1
     LangNames.Strings = (
       'Italiano'
       'English'
       'Russian'
-      'Turkish')
+      'Turkish'
+      'Belgian')
     Language = 'Italiano'
     ExcludedProperties.Strings = (
       'Category'
@@ -347,8 +349,8 @@ object FormSetpointCTRL: TFormSetpointCTRL
       'DataField'
       'KeyField'
       'ListField')
-    Left = 427
-    Top = 326
+    Left = 187
+    Top = 110
     TranslationData = {
       73007400430061007000740069006F006E0073005F0055006E00690063006F00
       640065000D000A00540046006F0072006D0053006500740070006F0069006E00
